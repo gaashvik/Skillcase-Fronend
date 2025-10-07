@@ -49,10 +49,10 @@ export default function Navbar() {
             {isAuthenticated ? (
               <>
                 <Link
-                  to="/dashboard"
+                  to="/admin/addFlashSet"
                   className="bg-cyan-500 text-white px-6 py-2 rounded-lg hover:bg-cyan-600 transition font-semibold"
                 >
-                  Dashboard
+                  Add Flash Set
                 </Link>
                 <button
                   onClick={handleLogout}
