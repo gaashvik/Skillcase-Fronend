@@ -196,7 +196,7 @@ const FlashcardStudyPage = () => {
   const handlers = useSwipeable({
     onSwipedLeft: () => handleNext(),
     onSwipedRight: () => handlePrevious(),
-    onSwipedUp: () => setIsFlipped(!isFlipped),
+    onTap: () => setIsFlipped(!isFlipped),
     preventDefaultTouchmoveEvent: true,
     trackMouse: false
   });
