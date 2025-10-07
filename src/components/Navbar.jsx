@@ -46,7 +46,7 @@ export default function Navbar() {
               Interview
             </Link>
 
-            {isAuthenticated ? (
+            {isAuthenticated  && user.role == 'admin'? (
               <>
                 <Link
                   to="/admin/addFlashSet"
