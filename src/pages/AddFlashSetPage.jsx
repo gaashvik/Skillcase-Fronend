@@ -53,11 +53,6 @@ const handleSubmit = async () => {
     },
   }
 );
-  console.log(response)
-
-    if (!response.ok) {
-      throw new Error('Failed to upload');
-    }
     setUploadStatus('Upload successful!');
 
     // Reset form
