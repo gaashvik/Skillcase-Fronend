@@ -1,6 +1,6 @@
 import React from "react";
 import { FileText, ArrowRight } from "lucide-react";
-
+import api from "../api/axios";
 export default function AddFlashSet() {
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [fileName, setFileName] = React.useState('');
@@ -44,10 +44,15 @@ const handleSubmit = async () => {
     formData.append('language', language);
     formData.append('difficulty_level', difficulty);
 
-    const response = await fetch('https://learning-platform-1-6kx3.onrender.com/api/admin/addFlashCardSet', {
-      method: 'POST',
-      body: formData,
-    });
+    const response = await axios.post(
+  "https://learning-platform-1-6kx3.onrender.com/api/admin/addFlashCardSet",
+  formData,
+  {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  }
+);
 
     if (!response.ok) {
       throw new Error('Failed to upload');
