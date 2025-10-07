@@ -44,7 +44,7 @@ const handleSubmit = async () => {
     formData.append('language', language);
     formData.append('difficulty_level', difficulty);
 
-    const response = await axios.post(
+    const response = await api.post(
   "https://learning-platform-1-6kx3.onrender.com/api/admin/addFlashCardSet",
   formData,
   {
