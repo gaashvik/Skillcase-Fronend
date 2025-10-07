@@ -6,15 +6,10 @@ export default function AddFlashSet() {
   const [fileName, setFileName] = React.useState('');
   const [chapterName, setChapterName] = React.useState('');
   const [language, setLanguage] = React.useState('');
-  const [difficulty, setDifficulty] = React.useState('');
+  const [proficicency, setProficiency] = React.useState('');
   const [uploadStatus, setUploadStatus] = React.useState('');
 
-  const languages = [
-    'English', 'Spanish', 'French', 'German', 'Chinese', 
-    'Japanese', 'Hindi', 'Arabic', 'Portuguese', 'Russian'
-  ];
-
-  const difficultyLevels = ['Easy', 'Medium', 'Hard', 'Expert'];
+  const proficiency_level = ['A1', 'A2', 'B1', 'B2','C1','C2','test'];
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -30,7 +25,7 @@ export default function AddFlashSet() {
   };
 
 const handleSubmit = async () => {
-  if (!selectedFile || !chapterName || !language || !difficulty) {
+  if (!selectedFile || !chapterName || !proficicency) {
     setUploadStatus('Please fill in all fields');
     return;
   }
@@ -41,11 +36,10 @@ const handleSubmit = async () => {
     const formData = new FormData();
     formData.append('file', selectedFile);
     formData.append('set_name', chapterName);
-    formData.append('language', language);
-    formData.append('difficulty_level', difficulty);
+    formData.append('proficiency_level', proficicency);
 
     const response = await api.post(
-  "https://learning-platform-1-6kx3.onrender.com/api/admin/addFlashCardSet",
+  "/admin/addFlashCardSet",
   formData,
   {
     headers: {
@@ -59,8 +53,7 @@ const handleSubmit = async () => {
     setSelectedFile(null);
     setFileName('');
     setChapterName('');
-    setLanguage('');
-    setDifficulty('');
+    setProficiency('');
   } catch (err) {
     console.error(err);
     setUploadStatus('Upload failed. Please try again.');
@@ -119,31 +112,15 @@ const handleSubmit = async () => {
 
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Language
+                Proficiency Level
               </label>
               <select
-                value={language}
-                onChange={(e) => setLanguage(e.target.value)}
+                value={proficicency}
+                onChange={(e) => setProficiency(e.target.value)}
                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition bg-white"
               >
                 <option value="">Select a language</option>
-                {languages.map((lang) => (
-                  <option key={lang} value={lang}>{lang}</option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Difficulty Level
-              </label>
-              <select
-                value={difficulty}
-                onChange={(e) => setDifficulty(e.target.value)}
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition bg-white"
-              >
-                <option value="">Select difficulty level</option>
-                {difficultyLevels.map((level) => (
+                {proficiency_level.map((level) => (
                   <option key={level} value={level}>{level}</option>
                 ))}
               </select>

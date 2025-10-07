@@ -37,7 +37,7 @@ export default function Navbar() {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             <Link
-              to="/practice"
+              to={user?.user_prof_level ? (`/practice/${user.user_prof_level}`):("/practice/test")}
               className="text-slate-600 hover:text-slate-900 transition font-medium"
             >
               Practice
@@ -88,50 +88,59 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden pb-4 space-y-3">
-            <Link to="/" className="block text-slate-600 hover:text-slate-900 font-medium">
-              Home
-            </Link>
-            <Link
-              to="/practice"
-              className="block text-slate-600 hover:text-slate-900 font-medium"
-            >
-              Practice
-            </Link>
-            <Link
-              to="/test"
-              className="block text-slate-600 hover:text-slate-900 font-medium"
-            >
-              Test
-            </Link>
-            <Link
-              to="/interview"
-              className="block text-slate-600 hover:text-slate-900 font-medium"
-            >
-              Interview
-            </Link>
+{/* Mobile Menu */}
+{mobileMenuOpen && (
+  <div className="md:hidden pb-4 space-y-3">
+    <Link to="/" className="block text-slate-600 hover:text-slate-900 font-medium">
+      Home
+    </Link>
+    <Link
+      to={user?.user_prof_level ? `/practice/${user.user_prof_level}` : "/practice/test"}
+      className="block text-slate-600 hover:text-slate-900 font-medium"
+    >
+      Practice
+    </Link>
+    <Link
+      to="/test"
+      className="block text-slate-600 hover:text-slate-900 font-medium"
+    >
+      Test
+    </Link>
+    <Link
+      to="/interview"
+      className="block text-slate-600 hover:text-slate-900 font-medium"
+    >
+      Interview
+    </Link>
 
-            {isAuthenticated ? (
-              <>
-                <AdminLink />
-                <button
-                  onClick={handleLogout}
-                  className="w-full bg-amber-500 text-white px-6 py-2 rounded-lg text-center font-semibold"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <Link
-                to="/login"
-                className="block w-full bg-amber-500 text-white px-6 py-2 rounded-lg text-center font-semibold"
-              >
-                Get Started
-              </Link>
-            )}
-          </div>
+    {isAuthenticated ? (
+      <>
+        {user?.role === "admin" && (
+          <Link
+            to="/admin/addFlashSet"
+            className="block w-full bg-cyan-500 text-white px-6 py-2 rounded-lg text-center font-semibold hover:bg-cyan-600 transition"
+          >
+            Add Flash Set
+          </Link>
         )}
+        <button
+          onClick={handleLogout}
+          className="w-full bg-amber-500 text-white px-6 py-2 rounded-lg text-center font-semibold hover:bg-amber-600 transition"
+        >
+          Logout
+        </button>
+      </>
+    ) : (
+      <Link
+        to="/login"
+        className="block w-full bg-amber-500 text-white px-6 py-2 rounded-lg text-center font-semibold hover:bg-amber-600 transition"
+      >
+        Get Started
+      </Link>
+    )}
+  </div>
+)}
+
       </div>
     </nav>
   );

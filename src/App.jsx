@@ -40,9 +40,8 @@ export default function App() {
 
       <Route path='/' element={<LandingPage />}/>
       <Route path='/admin/addFlashSet' element={<AddFlashSet />} />
-      <Route path='/practice' element={<Practice />}/>
-      <Route path='/next-page' element={<ChapterSelect/>} />
-      <Route path='/FlashSet/:set-id' element={<FlashcardStudyPage/>}/>
+      <Route path='/practice/:prof_level' element={<ChapterSelect/>}/>
+      <Route path='/practice/:prof_level/:set_id' element={<FlashcardStudyPage/>}/>
       <Route path='/Login' element={<LoginSignupPage/>}/>
     </Routes>
 

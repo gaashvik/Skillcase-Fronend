@@ -13,7 +13,7 @@ export default function Practice() {
   };
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+    <section className="min-h-screen max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
       <div className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-3xl p-8 lg:p-16 flex flex-col lg:flex-row items-center lg:items-end justify-between">
         {/* Left Side */}
         <div className="lg:w-1/2 text-center lg:text-left mb-8 lg:mb-0">
