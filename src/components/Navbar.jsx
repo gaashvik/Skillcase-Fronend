@@ -46,20 +46,16 @@ export default function Navbar() {
               Interview
             </Link>
 
-            {isAuthenticated  && user.role == 'admin'? (
+            {isAuthenticated ? (
               <>
-                <Link
-                  to="/admin/addFlashSet"
-                  className="bg-cyan-500 text-white px-6 py-2 rounded-lg hover:bg-cyan-600 transition font-semibold"
-                >
-                  Add Flash Set
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="bg-amber-500 text-white px-6 py-2 rounded-lg hover:bg-amber-600 transition font-semibold"
-                >
-                  Logout
-                </button>
+                {user.role === "admin" ? (
+      <Link
+        to="/admin/addFlashSet"
+        className="bg-cyan-500 text-white px-6 py-2 rounded-lg hover:bg-cyan-600 transition font-semibold"
+      >
+        Add Flash Set
+      </Link>
+    ) : null}
               </>
             ) : (
               <Link
@@ -106,12 +102,14 @@ export default function Navbar() {
 
             {isAuthenticated ? (
               <>
-                <Link
-                  to="/dashboard"
-                  className="block w-full bg-cyan-500 text-white px-6 py-2 rounded-lg text-center font-semibold"
-                >
-                  Dashboard
-                </Link>
+                  {user.role === "admin" ? (
+      <Link
+        to="/admin/addFlashSet"
+        className="bg-cyan-500 text-white px-6 py-2 rounded-lg hover:bg-cyan-600 transition font-semibold"
+      >
+        Add Flash Set
+      </Link>
+    ) : null}
                 <button
                   onClick={handleLogout}
                   className="w-full bg-amber-500 text-white px-6 py-2 rounded-lg text-center font-semibold"
