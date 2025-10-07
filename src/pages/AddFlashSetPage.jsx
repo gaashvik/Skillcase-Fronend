@@ -44,7 +44,7 @@ const handleSubmit = async () => {
     formData.append('language', language);
     formData.append('difficulty_level', difficulty);
 
-    const response = await fetch('http://localhost:3000/api/admin/addFlashCardSet', {
+    const response = await fetch('https://skillcase-fronend-k4z5.vercel.app/api/admin/addFlashCardSet', {
       method: 'POST',
       body: formData,
     });
