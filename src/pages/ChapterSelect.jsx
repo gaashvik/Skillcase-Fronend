@@ -72,7 +72,7 @@ export default function TwoColumnSection() {
       </div>
 
       {/* Right column */}
-<div className="w-full md:w-2/3 mt-5 max-h-screen overflow-y-auto space-y-4 hide-scrollbar">
+<div className="w-full md:w-2/3  mt-5 max-h-screen overflow-y-auto space-y-4 hide-scrollbar">
   {chapters.map((chapter) => {
     const color = 'amber';
     return (
