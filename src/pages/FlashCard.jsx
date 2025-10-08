@@ -196,16 +196,7 @@ const FlashcardStudyPage = () => {
   const [lastTap, setLastTap] = useState(0);
 
   const handleTap = () => {
-    const now = Date.now();
-    const DOUBLE_TAP_DELAY = 300; // ms
-
-    if (now - lastTap < DOUBLE_TAP_DELAY) {
       setIsFlipped(!isFlipped)
-    } else {
-      console.log("Single tap");
-    }
-
-    setLastTap(now);
   };
 
   const handlers = useSwipeable({
