@@ -857,10 +857,6 @@ const FlashcardStudyPage = () => {
           </div>
         </div>
 
-        {/* Mobile Swipe Hint */}
-        <div className="md:hidden text-center mb-4 text-sm text-slate-500 animate-pulse">
-          👆 Tap to flip • 👈👉 Swipe to navigate • 🔊 Tap speaker for audio
-        </div>
 
         {/* Knowledge Buttons */}
         {isFlipped && (
