@@ -457,7 +457,6 @@ const FlashcardStudyPage = () => {
                 className="px-8 py-4 bg-white text-slate-700 hover:bg-slate-50 rounded-xl shadow-lg hover:shadow-xl transition-all font-semibold border-2 border-slate-200 flex items-center justify-center gap-2"
               >
                 <ChevronLeft className="w-5 h-5" />
-
               </button>
 
               <button
@@ -473,7 +472,6 @@ const FlashcardStudyPage = () => {
                   onClick={skipTest}
                   className="px-8 py-4 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl shadow-lg hover:shadow-xl transition-all font-semibold flex items-center justify-center gap-2"
                 >
-                  Skip Test
                   <ChevronRight className="w-5 h-5" />
                 </button>
               )}
@@ -581,7 +579,7 @@ const FlashcardStudyPage = () => {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <h3 className="font-semibold text-slate-800">{question.question}</h3>
+                        <h3 className="font-semibold text-slate-800">what does "{question.question}" mean in German?</h3>
                         <span className={`text-xs px-2 py-1 rounded-full ${
                           question.type === 'mcq' 
                             ? 'bg-cyan-100 text-cyan-700' 
@@ -793,7 +791,7 @@ const FlashcardStudyPage = () => {
                   className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
                   style={{ left: `${position}%` }}
                 >
-                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                  <div className={`w-6 h-6 rounded-full  flex items-center justify-center ${
                     status === 'completed' 
                       ? 'bg-green-500 ' 
                       : 'bg-white '
