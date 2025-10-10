@@ -786,8 +786,8 @@ const FlashcardStudyPage = () => {
                 >
                   <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
                     status === 'completed' 
-                      ? 'bg-green-500 border-green-600' 
-                      : 'bg-white border-slate-400'
+                      ? 'bg-green-500 ' 
+                      : 'bg-white '
                   }`}>
                     {status === 'completed' ? (
                       <Check className="w-3 h-3 text-white" />
@@ -795,9 +795,9 @@ const FlashcardStudyPage = () => {
                       <Target className="w-3 h-3 text-slate-400" />
                     )}
                   </div>
-                  <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2 whitespace-nowrap">
+                  {/* <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2 whitespace-nowrap">
                     <span className="text-xs text-slate-500 font-medium">{breakpoint}</span>
-                  </div>
+                  </div> */}
                 </div>
               );
             })}
@@ -809,9 +809,9 @@ const FlashcardStudyPage = () => {
               <div className="w-7 h-7 rounded-full  bg-amber-500  flex items-center justify-center">
                 <Target className="w-4 h-4 text-white" />
               </div>
-              <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2 whitespace-nowrap">
+              {/* <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2 whitespace-nowrap">
                 <span className="text-xs text-amber-600 font-bold">Final</span>
-              </div>
+              </div> */}
             </div>
           </div>
           
