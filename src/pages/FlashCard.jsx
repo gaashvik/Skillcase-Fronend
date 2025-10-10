@@ -18,19 +18,25 @@ const FlashcardStudyPage = () => {
   const [showTestPrompt, setShowTestPrompt] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   
+  // Swipe animation states
+  const [swipeDirection, setSwipeDirection] = useState(null);
+  const [dragStart, setDragStart] = useState(null);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  
   const { prof_level, set_id } = useParams();
   const [searchParams] = useSearchParams();
   const set_name = searchParams.get("set_name");
   const navigate = useNavigate();
+
   // Speech synthesis function
   const speakText = (text, language = 'de-DE') => {
     if ('speechSynthesis' in window) {
-      // Cancel any ongoing speech
       window.speechSynthesis.cancel();
       
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = language;
-      utterance.rate = 0.9; // Slightly slower for learning
+      utterance.rate = 0.9;
       utterance.pitch = 1;
       
       utterance.onstart = () => setIsSpeaking(true);
@@ -70,7 +76,6 @@ const FlashcardStudyPage = () => {
     getCards();
   }, []);
 
-  // Cleanup speech synthesis on unmount
   useEffect(() => {
     return () => {
       if ('speechSynthesis' in window) {
@@ -82,7 +87,6 @@ const FlashcardStudyPage = () => {
   const totalCards = flashcardSet.length;
   const progress = ((currentCard + 1) / totalCards) * 100;
 
-  // Calculate test breakpoints
   const getTestBreakpoints = () => {
     const breakpoints = [];
     for (let i = 20; i <= totalCards; i += 20) {
@@ -95,27 +99,22 @@ const FlashcardStudyPage = () => {
 
   const testBreakpoints = getTestBreakpoints();
 
-  // Get test status at a breakpoint
   const getTestStatus = (breakpoint) => {
     return completedTests.has(breakpoint) ? 'completed' : 'pending';
   };
 
-  // Generate balanced test questions
   const generateTestQuestions = (cardIndices, isFinal = false) => {
     const questions = [];
     const availableCards = cardIndices.map(i => flashcardSet[i]).filter(Boolean);
     
     if (availableCards.length === 0) return [];
 
-    // Shuffle available cards
     const shuffled = [...availableCards].sort(() => Math.random() - 0.5);
     
     if (isFinal) {
-      // Final test: 21 MCQs and 9 True/False (30 total)
       const numMCQs = 21;
       const numTrueFalse = 9;
       
-      // Generate MCQs
       for (let i = 0; i < numMCQs && i < shuffled.length; i++) {
         if (shuffled.length >= 4) {
           const correctCard = shuffled[i % shuffled.length];
@@ -136,7 +135,6 @@ const FlashcardStudyPage = () => {
         }
       }
 
-      // Generate True/False questions
       for (let i = 0; i < numTrueFalse && i < shuffled.length; i++) {
         const card = shuffled[(numMCQs + i) % shuffled.length];
         const isTrue = Math.random() > 0.5;
@@ -151,11 +149,9 @@ const FlashcardStudyPage = () => {
         });
       }
     } else {
-      // Regular test: 5 MCQs and 5 True/False (10 total)
       const numMCQs = 5;
       const numTrueFalse = 5;
       
-      // Generate MCQs
       for (let i = 0; i < numMCQs && i < shuffled.length; i++) {
         if (shuffled.length >= 4) {
           const correctCard = shuffled[i];
@@ -176,7 +172,6 @@ const FlashcardStudyPage = () => {
         }
       }
 
-      // Generate True/False questions
       for (let i = 0; i < numTrueFalse && i < shuffled.length; i++) {
         const card = shuffled[(numMCQs + i) % shuffled.length];
         const isTrue = Math.random() > 0.5;
@@ -194,7 +189,6 @@ const FlashcardStudyPage = () => {
     return questions;
   };
 
-  // Check if test should be shown
   const shouldShowTest = (nextCard) => {
     if (nextCard > 0 && nextCard % 20 === 0 && nextCard < totalCards) {
       return true;
@@ -205,22 +199,73 @@ const FlashcardStudyPage = () => {
     return false;
   };
 
-  const [lastTap, setLastTap] = useState(0);
-
-  const handleTap = () => {
-      setIsFlipped(!isFlipped)
+  // Swipe handlers for animation
+  const handleDragStart = (e) => {
+    const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+    setDragStart(clientX);
+    setIsDragging(true);
+    setSwipeDirection(null);
   };
 
-  const handlers = useSwipeable({
-    onSwipedLeft: () => handleNext(),
-    onSwipedRight: () => handlePrevious(),
-    onTap: () => handleTap,
-    preventDefaultTouchmoveEvent: true,
-    trackMouse: false
-  });
+  const handleDragMove = (e) => {
+    if (!dragStart) return;
+    
+    const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+    const delta = clientX - dragStart;
+    setDragOffset(delta);
+  };
+
+  const handleDragEnd = () => {
+    if (!dragStart) return;
+    
+    const swipeThreshold = 100;
+    
+    if (Math.abs(dragOffset) > swipeThreshold) {
+      if (dragOffset > 0) {
+        // Swiped right - go to previous
+        setSwipeDirection('right');
+        setTimeout(() => {
+          handlePrevious();
+          setSwipeDirection(null);
+          setDragOffset(0);
+        }, 300);
+      } else {
+        // Swiped left - go to next
+        setSwipeDirection('left');
+        setTimeout(() => {
+          handleNext();
+          setSwipeDirection(null);
+          setDragOffset(0);
+        }, 300);
+      }
+    } else {
+      setDragOffset(0);
+    }
+    
+    setDragStart(null);
+    setIsDragging(false);
+  };
+
+  const handleCardFlip = (e) => {
+    // Don't flip if dragging or if clicking speaker button
+    if (!isDragging && Math.abs(dragOffset) < 10) {
+      setIsFlipped(!isFlipped);
+    }
+  };
+
+  const getCardTransform = () => {
+    if (swipeDirection === 'left') {
+      return 'translateX(-120%) rotate(-20deg)';
+    } else if (swipeDirection === 'right') {
+      return 'translateX(120%) rotate(20deg)';
+    } else if (isDragging && dragOffset !== 0) {
+      const rotation = dragOffset * 0.05;
+      return `translateX(${dragOffset}px) rotate(${rotation}deg)`;
+    }
+    return 'translateX(0) rotate(0deg)';
+  };
 
   const handleNext = () => {
-    // Stop any ongoing speech
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
     }
@@ -239,18 +284,30 @@ const FlashcardStudyPage = () => {
     }
   };
 
+  const handlePrevious = () => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+    
+    if (showTestPrompt) {
+      setShowTestPrompt(false);
+      setIsFlipped(false);
+    } else if (currentCard > 0) {
+      setCurrentCard(currentCard - 1);
+      setIsFlipped(false);
+    }
+  };
+
   const startTest = () => {
     const nextCard = currentCard + 1;
     let cardIndices;
     const isFinal = nextCard === totalCards || currentCard === totalCards - 1;
     
     if (isFinal) {
-      // Final test: random 30 cards from all (or all cards if less than 30)
       const allIndices = Array.from({ length: totalCards }, (_, i) => i);
       const numCards = Math.min(30, totalCards);
       cardIndices = allIndices.sort(() => Math.random() - 0.5).slice(0, numCards);
     } else {
-      // Regular test: previous 20 cards (or available cards if less than 20)
       const numCards = Math.min(20, nextCard);
       cardIndices = Array.from({ length: numCards }, (_, i) => nextCard - numCards + i);
     }
@@ -276,20 +333,6 @@ const FlashcardStudyPage = () => {
     }
   };
 
-  const handlePrevious = () => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-    }
-    
-    if (showTestPrompt) {
-      setShowTestPrompt(false);
-      setIsFlipped(false);
-    } else if (currentCard > 0) {
-      setCurrentCard(currentCard - 1);
-      setIsFlipped(false);
-    }
-  };
-
   const handleShuffle = () => {
     setCurrentCard(0);
     setIsFlipped(false);
@@ -301,14 +344,6 @@ const FlashcardStudyPage = () => {
     setIsFlipped(false);
     setCompletedTests(new Set());
     setShowTestPrompt(false);
-  };
-
-  const markAsKnown = () => {
-    handleNext();
-  };
-
-  const markAsUnknown = () => {
-    handleNext();
   };
 
   const handleTestAnswer = (questionIndex, answer) => {
@@ -337,7 +372,6 @@ const FlashcardStudyPage = () => {
       passed
     });
     
-    // Record test completion
     if (!isFinalTest) {
       const newCompleted = new Set(completedTests);
       newCompleted.add(currentCard + 1);
@@ -356,6 +390,7 @@ const FlashcardStudyPage = () => {
     setIsFinalTest(false);
   };
 
+  // Test prompt and test screens remain the same...
   if (showTestPrompt) {
     const isAtFinalTest = currentCard === totalCards - 1;
     const testPosition = isAtFinalTest ? 'Final' : currentCard + 1;
@@ -365,18 +400,13 @@ const FlashcardStudyPage = () => {
         <header className="bg-white shadow-sm border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-6 py-4">
             <div className="flex items-center justify-between gap-4">
-              
-              {/* Left: Back navigation (responsive) */}
               <div className="flex items-center">
-                {/* Mobile chevron */}
                 <button
                   onClick={() => navigate(`/practice/${prof_level}`)}
                   className="flex md:hidden items-center text-slate-600 hover:text-slate-800 transition-colors"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
-
-                {/* Desktop button */}
                 <button
                   onClick={() => navigate(`/practice/${prof_level}`)}
                   className="hidden md:flex items-center gap-2 text-slate-600 hover:text-slate-800 transition-colors"
@@ -385,29 +415,25 @@ const FlashcardStudyPage = () => {
                   <span className="font-medium">Back to Chapters</span>
                 </button>
               </div>
-
-              {/* Center: Title */}
               <div className="text-center flex-1">
                 <h1 className="text-xl md:text-2xl font-bold text-slate-800">{set_name}</h1>
                 <p className="text-sm text-slate-500">
                   🇩🇪 German • {prof_level?.toUpperCase()} Level
                 </p>
               </div>
-
-              {/* Right: Spacer for symmetry on desktop */}
               <div className="w-5 md:w-32"></div>
             </div>
           </div>
         </header>
 
         <div className="max-w-4xl mx-auto px-4 md:px-6 py-12 md:py-20">
-          <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 text-center border-2 border-cyan-200">
-            <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center">
+          <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 text-center border-2 border-slate-200">
+            <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-slate-500 to-slate-600 rounded-full flex items-center justify-center">
               <Target className="w-10 h-10 text-white" />
             </div>
             
             <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
-              {isAtFinalTest ? ' Final Assessment Ready!' : ' Test Checkpoint!'}
+              {isAtFinalTest ? 'Final Assessment Ready!' : 'Test Checkpoint!'}
             </h2>
             
             <p className="text-lg text-slate-600 mb-8">
@@ -707,22 +733,16 @@ const FlashcardStudyPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-slate-50">
-      {/* Header */}
       <header className="bg-white shadow-sm border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between gap-4">
-            
-            {/* Left: Back navigation (responsive) */}
             <div className="flex items-center">
-              {/* Mobile chevron */}
               <button
                 onClick={() => navigate(`/practice/${prof_level}`)}
                 className="flex md:hidden items-center text-slate-600 hover:text-slate-800 transition-colors"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
-
-              {/* Desktop button */}
               <button
                 onClick={() => navigate(`/practice/${prof_level}`)}
                 className="hidden md:flex items-center gap-2 text-slate-600 hover:text-slate-800 transition-colors"
@@ -731,30 +751,22 @@ const FlashcardStudyPage = () => {
                 <span className="font-medium">Back to Chapters</span>
               </button>
             </div>
-
-            {/* Center: Title */}
             <div className="text-center flex-1">
               <h1 className="text-xl md:text-2xl font-bold text-slate-800">{set_name}</h1>
               <p className="text-sm text-slate-500">
                 🇩🇪 German • {prof_level?.toUpperCase()} Level
               </p>
             </div>
-
-            {/* Right: Spacer for symmetry on desktop */}
             <div className="w-5 md:w-32"></div>
           </div>
         </div>
       </header>
 
-      {/* Progress Bar with Test Breakpoints */}
-      <div className="bg-white border-b border-slate-200 pl-5 pr-5">
+      <div className=" pl-10 pr-10">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-slate-600">
               Card {currentCard + 1} of {totalCards}
-            </span>
-            <span className="text-sm font-medium text-cyan-600">
-              {Math.round(progress)}% Complete
             </span>
           </div>
           <div className="relative w-full h-3 bg-slate-100 rounded-full overflow-visible">
@@ -763,7 +775,6 @@ const FlashcardStudyPage = () => {
               style={{ width: `${progress}%` }}
             ></div>
             
-            {/* Test Breakpoint Markers */}
             {testBreakpoints.map((breakpoint) => {
               const position = (breakpoint / totalCards) * 100;
               const status = getTestStatus(breakpoint);
@@ -791,12 +802,11 @@ const FlashcardStudyPage = () => {
               );
             })}
             
-            {/* Final Test Marker */}
             <div
               className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
               style={{ left: '100%' }}
             >
-              <div className="w-7 h-7 rounded-full border-2 bg-amber-500 border-amber-600 flex items-center justify-center">
+              <div className="w-7 h-7 rounded-full  bg-amber-500  flex items-center justify-center">
                 <Target className="w-4 h-4 text-white" />
               </div>
               <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2 whitespace-nowrap">
@@ -805,25 +815,10 @@ const FlashcardStudyPage = () => {
             </div>
           </div>
           
-          {/* Legend */}
-          <div className="flex items-center justify-center gap-4 mt-9 text-xs">
-            <div className="flex items-center gap-1">
-              <div className="w-4 h-4 rounded-full bg-white border-2 border-slate-400 flex items-center justify-center">
-                <Target className="w-2 h-2 text-slate-400" />
-              </div>
-              <span className="text-slate-600">Pending Test</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <div className="w-4 h-4 rounded-full bg-green-500 flex items-center justify-center">
-                <Check className="w-2 h-2 text-white" />
-              </div>
-              <span className="text-slate-600">Completed</span>
-            </div>
-          </div>
+
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
         <div className="flex items-center justify-center gap-2 md:gap-4 mb-8">
           <button
@@ -864,25 +859,47 @@ const FlashcardStudyPage = () => {
           </button>
         </div>
 
-        {/* Flashcard */}
+        {/* Flashcard with Swipe Animation */}
         <div className="mb-8">
           <div
-            {...handlers}
-            onClick={() => setIsFlipped(!isFlipped)}
-            className="relative w-full h-[400px] md:h-[500px] cursor-pointer perspective-1000"
+            className="relative w-full h-[400px] md:h-[500px] cursor-pointer"
+            onMouseDown={handleDragStart}
+            onMouseMove={handleDragMove}
+            onMouseUp={handleDragEnd}
+            onMouseLeave={handleDragEnd}
+            onTouchStart={handleDragStart}
+            onTouchMove={handleDragMove}
+            onTouchEnd={handleDragEnd}
+            onClick={handleCardFlip}
+            style={{
+              transform: getCardTransform(),
+              opacity: swipeDirection ? 0 : 1,
+              transition: isDragging ? 'none' : 'all 0.3s ease-out',
+            }}
           >
+            {/* Swipe Direction Indicators */}
+            {isDragging && dragOffset > 50 && (
+              <div className="absolute top-8 right-8 bg-blue-500 text-white px-6 py-3 rounded-full font-bold text-xl shadow-lg pointer-events-none z-30">
+                PREVIOUS
+              </div>
+            )}
+            {isDragging && dragOffset < -50 && (
+              <div className="absolute top-8 left-8 bg-green-500 text-white px-6 py-3 rounded-full font-bold text-xl shadow-lg pointer-events-none z-30">
+                NEXT
+              </div>
+            )}
+
             {/* Front of Card */}
             <div
               className={`absolute inset-0 transition-all duration-500 ${
                 isFlipped ? 'opacity-0 pointer-events-none rotate-y-180' : 'opacity-100'
               }`}
+              style={{ transformStyle: 'preserve-3d' }}
             >
               <div className="h-full bg-white rounded-3xl shadow-2xl p-12 flex flex-col items-center justify-center border-4 border-cyan-500 relative overflow-hidden">
-                {/* Decorative Elements */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-100 rounded-full -translate-y-16 translate-x-16 opacity-50"></div>
                 <div className="absolute bottom-0 left-0 w-40 h-40 bg-blue-100 rounded-full translate-y-20 -translate-x-20 opacity-50"></div>
 
-                {/* Sound Button - Top Right */}
                 <button
                   onClick={handleSpeakFront}
                   className={`absolute top-6 right-6 p-3 rounded-full shadow-lg transition-all z-20 ${
@@ -912,13 +929,12 @@ const FlashcardStudyPage = () => {
               className={`absolute inset-0 transition-all duration-500 ${
                 isFlipped ? 'opacity-100' : 'opacity-0 pointer-events-none -rotate-y-180'
               }`}
+              style={{ transformStyle: 'preserve-3d' }}
             >
               <div className="h-full bg-gradient-to-br from-amber-400 via-amber-500 to-orange-500 rounded-3xl shadow-2xl p-12 flex flex-col items-center justify-center relative overflow-hidden">
-                {/* Decorative Elements */}
                 <div className="absolute top-0 left-0 w-48 h-48 bg-white/10 rounded-full -translate-y-24 -translate-x-24"></div>
                 <div className="absolute bottom-0 right-0 w-56 h-56 bg-white/10 rounded-full translate-y-28 translate-x-28"></div>
 
-                {/* Sound Button - Top Right */}
                 <button
                   onClick={handleSpeakBack}
                   className={`absolute top-6 right-6 p-3 rounded-full shadow-lg transition-all z-20 ${
@@ -943,6 +959,8 @@ const FlashcardStudyPage = () => {
               </div>
             </div>
           </div>
+          
+
         </div>
       </div>
     </div>
