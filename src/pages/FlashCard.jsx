@@ -85,6 +85,18 @@ const FlashcardStudyPage = () => {
       }
     };
   }, []);
+    useEffect(()=>{
+    if(!user){
+      navigate('/login')
+    }
+  },[])
+
+
+  const handleTestClick=() =>{
+    setCurrentCard(totalCards - 1);
+     setShowTestPrompt(true); 
+  }
+
 
   const totalCards = flashcardSet.length;
   const progress = ((currentCard + 1) / totalCards) * 100;
@@ -754,12 +766,6 @@ const FlashcardStudyPage = () => {
       </div>
     );
   }
-  useEffect(()=>{
-    if(!user){
-      navigate('/login')
-    }
-  },[])
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-slate-50">
       <header className="bg-white shadow-sm border-b border-slate-200">
@@ -835,7 +841,7 @@ const FlashcardStudyPage = () => {
               className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
               style={{ left: '100%' }}
             >
-              <div className="w-7 h-7 rounded-full  bg-amber-500  flex items-center justify-center">
+              <div className="w-7 h-7 rounded-full  bg-amber-500  flex items-center justify-center" onClick={handleTestClick}>
                 <Target className="w-4 h-4 text-white" />
               </div>
               {/* <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2 whitespace-nowrap">
