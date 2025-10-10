@@ -842,47 +842,10 @@ const FlashcardStudyPage = () => {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
-        <div className="flex items-center justify-center gap-2 md:gap-4 mb-8">
-          <button
-            onClick={handlePrevious}
-            disabled={currentCard === 0 && !showTestPrompt}
-            className={`p-3 md:p-4 rounded-xl transition-all ${
-              currentCard === 0 && !showTestPrompt
-                ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                : 'bg-white text-slate-700 hover:bg-slate-50 shadow-lg hover:shadow-xl'
-            }`}
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleShuffle}
-              className="px-4 md:px-6 py-3 md:py-4 bg-white text-slate-700 hover:bg-slate-50 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2 font-medium text-sm md:text-base"
-            >
-              <Shuffle className="w-5 h-5" />
-              Shuffle
-            </button>
-
-            <button
-              onClick={handleReset}
-              className="px-4 md:px-6 py-3 md:py-4 bg-white text-slate-700 hover:bg-slate-50 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2 font-medium text-sm md:text-base"
-            >
-              <RotateCw className="w-5 h-5" />
-              Reset
-            </button>
-          </div>
-
-          <button
-            onClick={handleNext}
-            className="p-3 md:p-4 rounded-xl transition-all bg-white text-slate-700 hover:bg-slate-50 shadow-lg hover:shadow-xl"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
-        </div>
 
         {/* Flashcard with Swipe Animation */}
-        <div className="mb-8">
+        <div className="mb-8 space-y-8">
           <div
             className="relative w-full h-[400px] md:h-[500px] cursor-pointer"
             onMouseDown={handleDragStart}
@@ -980,7 +943,46 @@ const FlashcardStudyPage = () => {
                 </div>
               </div>
             </div>
+            
           </div>
+                  <div className="flex items-center justify-center gap-2 md:gap-4 mb-8">
+          <button
+            onClick={handlePrevious}
+            disabled={currentCard === 0 && !showTestPrompt}
+            className={`p-3 md:p-4 rounded-xl transition-all ${
+              currentCard === 0 && !showTestPrompt
+                ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                : 'bg-white text-slate-700 hover:bg-slate-50 shadow-lg hover:shadow-xl'
+            }`}
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleShuffle}
+              className="px-4 md:px-6 py-3 md:py-4 bg-white text-slate-700 hover:bg-slate-50 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2 font-medium text-sm md:text-base"
+            >
+              <Shuffle className="w-5 h-5" />
+              Shuffle
+            </button>
+
+            <button
+              onClick={handleReset}
+              className="px-4 md:px-6 py-3 md:py-4 bg-white text-slate-700 hover:bg-slate-50 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2 font-medium text-sm md:text-base"
+            >
+              <RotateCw className="w-5 h-5" />
+              Reset
+            </button>
+          </div>
+
+          <button
+            onClick={handleNext}
+            className="p-3 md:p-4 rounded-xl transition-all bg-white text-slate-700 hover:bg-slate-50 shadow-lg hover:shadow-xl"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        </div>
           
 
         </div>

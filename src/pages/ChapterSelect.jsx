@@ -56,7 +56,7 @@ export default function TwoColumnSection() {
           <span>{chapters.length} Chapter(s)</span>
         </div>
         <div>
-          <div className="flex items-center gap-2 mb-2">
+          <div className="flex gap-2 mb-2">
             <BarChart2 className="w-12 h-5 text-amber-400" />
             <span>Progress</span>
           </div>
