@@ -3,8 +3,10 @@ import { ChevronLeft, ChevronRight, Shuffle, RotateCw, Check, X, BookOpen, Alert
 import { useSwipeable } from 'react-swipeable';
 import api from '../api/axios';
 import { useNavigate, useLocation, useParams, useSearchParams } from 'react-router-dom';
-
+import { useSelector } from 'react-redux';
 const FlashcardStudyPage = () => {
+  const {user} = useSelector((state) => state.auth);
+  
   const [currentCard, setCurrentCard] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [flashcardSet, setFlashcardSet] = useState([]);
@@ -752,6 +754,11 @@ const FlashcardStudyPage = () => {
       </div>
     );
   }
+  useEffect(()=>{
+    if(!user){
+      navigate('/login')
+    }
+  },[])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-slate-50">

@@ -1,6 +1,11 @@
 import React from "react";
 import { BookOpen, FileText, Video, ArrowRight } from "lucide-react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
 export default function LandingPage() {
+  const {user} = useSelector((state) => state.auth);
+  
   const services = [
     {
       icon: <BookOpen className="w-12 h-12" />,
@@ -27,14 +32,44 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white w-screen">
+{/* Mobile Quick Access Widgets - Only shown when user is logged in */}
+{user && (
+  <div className="md:hidden bg-slate-100 px-4 py-6 flex flex-row items-center">
+    <div className="flex w-full gap-4 justify-between">
+      <Link
+        to={user?.user_prof_level ? (`/practice/${user?.user_prof_level}`):('practice/test')}
+        className="flex-1 bg-white rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition"
+      >
+        <BookOpen className="w-10 h-10 text-blue-500 mx-auto mb-3" />
+        <span className="text-sm font-semibold text-slate-900 block">Practice</span>
+        <span className="text-xs text-slate-600 block mt-1">Flashcards</span>
+      </Link>
+
+      <Link
+        to="/test"
+        className="flex-1 bg-slate-900 rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition"
+      >
+        <FileText className="w-10 h-10 text-amber-400 mx-auto mb-3" />
+        <span className="text-sm font-semibold text-white block">Take</span>
+        <span className="text-xs text-slate-300 block mt-1">Tests</span>
+      </Link>
+
+      <Link
+        to="/interview"
+        className="flex-1 bg-white rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition"
+      >
+        <Video className="w-10 h-10 text-amber-500 mx-auto mb-3" />
+        <span className="text-sm font-semibold text-slate-900 block">Mock</span>
+        <span className="text-xs text-slate-600 block mt-1">Interview</span>
+      </Link>
+    </div>
+  </div>
+)}
+
+      
       <section id="home" className="w-full px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
         <div className="container mx-auto grid lg:grid-cols-2 gap-8 xl:gap-12 items-center">
           <div className="space-y-6">
-            <div className="inline-flex items-center space-x-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm">
-              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-              <span>Live Learning Sessions Available</span>
-            </div>
-            
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
               Master Your Skills with Expert Guidance
             </h1>
@@ -44,10 +79,13 @@ export default function LandingPage() {
               to excel in your career, from preparation to professional success.
             </p>
             
-            <button className="bg-amber-500 text-white px-8 py-4 rounded-lg hover:bg-amber-600 transition flex items-center space-x-2 text-lg font-semibold group">
+            <Link
+              to="/login"
+              className="bg-amber-500 text-white px-8 py-4 rounded-lg hover:bg-amber-600 transition flex items-center space-x-2 text-lg font-semibold group inline-flex"
+            >
               <span>Start Learning</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition" />
-            </button>
+            </Link>
           </div>
 
           <div className="relative w-full">

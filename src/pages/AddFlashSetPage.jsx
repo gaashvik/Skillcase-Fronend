@@ -1,15 +1,25 @@
 import React from "react";
 import { FileText, ArrowRight } from "lucide-react";
 import api from "../api/axios";
+
 export default function AddFlashSet() {
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [fileName, setFileName] = React.useState('');
   const [chapterName, setChapterName] = React.useState('');
   const [language, setLanguage] = React.useState('');
-  const [proficicency, setProficiency] = React.useState('');
+  const [proficiency, setProficiency] = React.useState('');
   const [uploadStatus, setUploadStatus] = React.useState('');
 
-  const proficiency_level = ['A1', 'A2', 'B1', 'B2','C1','C2','test'];
+  const prof_chapter_mp = {
+    A1: ['Chapter 1','Chapter 2','Chapter 3','Chapter 4','Chapter 5','Chapter 6','Chapter 7','Chapter 8','Chapter 9','Chapter 10','Chapter 11','Chapter 12'],
+    A2: ['Chapter 1','Chapter 2','Chapter 3'],
+    B1: ['Lesson 1','Lesson 2','Lesson 3'],
+    B2: ['Unit 1','Unit 2'],
+    C1: ['Module 1','Module 2'],
+    C2: ['Topic 1'],
+  };
+
+  const proficiencyLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'Test'];
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -24,42 +34,37 @@ export default function AddFlashSet() {
     }
   };
 
-const handleSubmit = async () => {
-  if (!selectedFile || !chapterName || !proficicency) {
-    setUploadStatus('Please fill in all fields');
-    return;
-  }
+  const handleSubmit = async () => {
+    if (!selectedFile || !chapterName || !proficiency) {
+      setUploadStatus('Please fill in all fields');
+      return;
+    }
 
-  setUploadStatus('Uploading...');
+    setUploadStatus('Uploading...');
 
-  try {
-    const formData = new FormData();
-    formData.append('file', selectedFile);
-    formData.append('set_name', chapterName);
-    formData.append('proficiency_level', proficicency);
+    try {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      formData.append('set_name', chapterName);
+      formData.append('proficiency_level', proficiency);
 
-    const response = await api.post(
-  "/admin/addFlashCardSet",
-  formData,
-  {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  }
-);
-    setUploadStatus('Upload successful!');
+      await api.post("/admin/addFlashCardSet", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-    // Reset form
-    setSelectedFile(null);
-    setFileName('');
-    setChapterName('');
-    setProficiency('');
-  } catch (err) {
-    console.error(err);
-    setUploadStatus('Upload failed. Please try again.');
-  }
-};
-  
+      setUploadStatus('Upload successful!');
+
+      // Reset form
+      setSelectedFile(null);
+      setFileName('');
+      setChapterName('');
+      setProficiency('');
+    } catch (err) {
+      console.error(err);
+      setUploadStatus('Upload failed. Please try again.');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white w-screen">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -70,6 +75,7 @@ const handleSubmit = async () => {
           </div>
 
           <div className="space-y-6">
+            {/* CSV Upload */}
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Upload CSV File
@@ -97,35 +103,43 @@ const handleSubmit = async () => {
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Chapter Name
-              </label>
-              <input
-                type="text"
-                value={chapterName}
-                onChange={(e) => setChapterName(e.target.value)}
-                placeholder="Enter chapter name"
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition"
-              />
-            </div>
-
+            {/* Proficiency Level */}
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Proficiency Level
               </label>
               <select
-                value={proficicency}
+                value={proficiency}
                 onChange={(e) => setProficiency(e.target.value)}
                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition bg-white"
               >
-                <option value="">Select a language</option>
-                {proficiency_level.map((level) => (
+                <option value="">Select a proficiency level</option>
+                {proficiencyLevels.map((level) => (
                   <option key={level} value={level}>{level}</option>
                 ))}
               </select>
             </div>
 
+            {/* Chapter Name */}
+            {proficiency && prof_chapter_mp[proficiency] && (
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Chapter Name
+                </label>
+                <select
+                  value={chapterName}
+                  onChange={(e) => setChapterName(e.target.value)}
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition"
+                >
+                  <option value="">Select a chapter</option>
+                  {prof_chapter_mp[proficiency].map((chapter) => (
+                    <option key={chapter} value={chapter}>{chapter}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {/* Upload Status */}
             {uploadStatus && (
               <div className={`p-4 rounded-lg ${
                 uploadStatus.includes('successful') 
@@ -138,6 +152,7 @@ const handleSubmit = async () => {
               </div>
             )}
 
+            {/* Submit Button */}
             <button
               onClick={handleSubmit}
               className="w-full bg-amber-500 text-white px-8 py-4 rounded-lg hover:bg-amber-600 transition font-semibold text-lg flex items-center justify-center space-x-2 group"
@@ -147,6 +162,7 @@ const handleSubmit = async () => {
             </button>
           </div>
 
+          {/* Recent Uploads */}
           <div className="mt-12 pt-8 border-t border-slate-200">
             <h2 className="text-xl font-bold text-slate-900 mb-4">Recent Uploads</h2>
             <div className="space-y-3">
