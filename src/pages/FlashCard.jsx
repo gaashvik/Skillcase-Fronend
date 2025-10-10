@@ -334,9 +334,18 @@ const FlashcardStudyPage = () => {
   };
 
   const handleShuffle = () => {
+    const shuffle = [...flashcardSet];
+    
+    for (let i = shuffle.length -1; i >0; i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [shuffle[i],shuffle[j]]=[shuffle[j],shuffle[i]]
+    }
+    console.log(shuffle);
+    setFlashcardSet(shuffle);
     setCurrentCard(0);
     setIsFlipped(false);
     setShowTestPrompt(false);
+    setCompletedTests(new Set());
   };
 
   const handleReset = () => {
@@ -442,21 +451,21 @@ const FlashcardStudyPage = () => {
                 : `You've reached card ${testPosition}. Time for a quick test to reinforce your learning!`}
             </p>
 
-            <div className="flex flex-col md:flex-row gap-4 justify-center">
+            <div className="flex flex-row md:flex-row gap-4 justify-center">
               <button
                 onClick={handlePrevious}
                 className="px-8 py-4 bg-white text-slate-700 hover:bg-slate-50 rounded-xl shadow-lg hover:shadow-xl transition-all font-semibold border-2 border-slate-200 flex items-center justify-center gap-2"
               >
                 <ChevronLeft className="w-5 h-5" />
-                Go Back
+
               </button>
 
               <button
                 onClick={startTest}
-                className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all font-semibold flex items-center justify-center gap-2"
+                className="px-8 py-4 bg-gradient-to-r from-slate-500 to-slate-600 hover:from-slate-600 hover:to-slate-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all font-semibold flex items-center justify-center gap-2"
               >
                 {isAtFinalTest ? 'Start Final Test' : 'Take Test'}
-                <ChevronRight className="w-5 h-5" />
+               
               </button>
               
               {!isAtFinalTest && (
@@ -771,7 +780,7 @@ const FlashcardStudyPage = () => {
           </div>
           <div className="relative w-full h-3 bg-slate-100 rounded-full overflow-visible">
             <div
-              className="h-full bg-gradient-to-r from-slate-500 to-slate-600 rounded-full transition-all duration-300"
+              className="h-full bg-gradient-to-r from-slate-700 to-slate-800 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             ></div>
             
@@ -896,7 +905,7 @@ const FlashcardStudyPage = () => {
               }`}
               style={{ transformStyle: 'preserve-3d' }}
             >
-              <div className="h-full bg-white rounded-3xl shadow-2xl p-12 flex flex-col items-center justify-center border-4 border-cyan-500 relative overflow-hidden">
+              <div className="h-full bg-white rounded-3xl shadow-2xl p-12 flex flex-col items-center justify-center border-4 border-slate-500 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-100 rounded-full -translate-y-16 translate-x-16 opacity-50"></div>
                 <div className="absolute bottom-0 left-0 w-40 h-40 bg-blue-100 rounded-full translate-y-20 -translate-x-20 opacity-50"></div>
 
