@@ -578,7 +578,11 @@ const FlashcardStudyPage = () => {
                       </span>
                     </div>
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
+                      
+                      {question.type === 'mcq' ? (
+                        <>
+                        
+                        <div className="flex items-center gap-2 mb-2">
                         <h3 className="font-semibold text-slate-800">what does "{question.question}" mean in German?</h3>
                         <span className={`text-xs px-2 py-1 rounded-full ${
                           question.type === 'mcq' 
@@ -588,8 +592,6 @@ const FlashcardStudyPage = () => {
                           {question.type === 'mcq' ? 'MCQ' : 'T/F'}
                         </span>
                       </div>
-                      
-                      {question.type === 'mcq' ? (
                         <div className="space-y-2">
                           {question.options.map((option, oIndex) => (
                             <label
@@ -612,10 +614,22 @@ const FlashcardStudyPage = () => {
                             </label>
                           ))}
                         </div>
+                        </>
                       ) : (
+                        <>
+                        <div className="flex items-center gap-2 mb-2">
+                        <h3 className="font-semibold text-slate-800">"{question.question}" means "{question.displayAnswer}" in German?</h3>
+                        <span className={`text-xs px-2 py-1 rounded-full ${
+                          question.type === 'mcq' 
+                            ? 'bg-cyan-100 text-cyan-700' 
+                            : 'bg-purple-100 text-purple-700'
+                        }`}>
+                          {question.type === 'mcq' ? 'MCQ' : 'T/F'}
+                        </span>
+                      </div>
                         <div>
-                          <p className="text-slate-600 mb-3 italic">"{question.displayAnswer}"</p>
-                          <div className="flex gap-3">
+                          {/* <p className="text-slate-600 mb-3 italic">"{question.displayAnswer}"</p> */}
+                          <div className="flex gap-3 mt-5">
                             <label
                               className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all ${
                                 userAnswers[qIndex] === true
@@ -652,6 +666,7 @@ const FlashcardStudyPage = () => {
                             </label>
                           </div>
                         </div>
+                        </>
                       )}
                     </div>
                   </div>
