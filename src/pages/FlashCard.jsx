@@ -85,7 +85,7 @@ const FlashcardStudyPage = () => {
   // Calculate test breakpoints
   const getTestBreakpoints = () => {
     const breakpoints = [];
-    for (let i = 5; i <= totalCards; i += 5) {
+    for (let i = 20; i <= totalCards; i += 20) {
       if (i < totalCards) {
         breakpoints.push(i);
       }
@@ -111,11 +111,52 @@ const FlashcardStudyPage = () => {
     const shuffled = [...availableCards].sort(() => Math.random() - 0.5);
     
     if (isFinal) {
-      // Final test: Equal MCQs and True/False (5 of each = 10 total)
-      const numQuestions = 5;
+      // Final test: 21 MCQs and 9 True/False (30 total)
+      const numMCQs = 21;
+      const numTrueFalse = 9;
       
       // Generate MCQs
-      for (let i = 0; i < numQuestions && i < shuffled.length; i++) {
+      for (let i = 0; i < numMCQs && i < shuffled.length; i++) {
+        if (shuffled.length >= 4) {
+          const correctCard = shuffled[i % shuffled.length];
+          const availableWrong = shuffled.filter((_, idx) => idx !== (i % shuffled.length));
+          const wrongOptions = availableWrong.slice(0, 3);
+          
+          if (wrongOptions.length === 3) {
+            const options = [correctCard.back_content, ...wrongOptions.map(c => c.back_content)]
+              .sort(() => Math.random() - 0.5);
+            
+            questions.push({
+              type: 'mcq',
+              question: correctCard.front_content,
+              options: options,
+              correctAnswer: correctCard.back_content
+            });
+          }
+        }
+      }
+
+      // Generate True/False questions
+      for (let i = 0; i < numTrueFalse && i < shuffled.length; i++) {
+        const card = shuffled[(numMCQs + i) % shuffled.length];
+        const isTrue = Math.random() > 0.5;
+        const wrongCardIndex = (numMCQs + i + 1) % shuffled.length;
+        const displayAnswer = isTrue ? card.back_content : shuffled[wrongCardIndex].back_content;
+        
+        questions.push({
+          type: 'truefalse',
+          question: card.front_content,
+          displayAnswer: displayAnswer,
+          correctAnswer: isTrue
+        });
+      }
+    } else {
+      // Regular test: 5 MCQs and 5 True/False (10 total)
+      const numMCQs = 5;
+      const numTrueFalse = 5;
+      
+      // Generate MCQs
+      for (let i = 0; i < numMCQs && i < shuffled.length; i++) {
         if (shuffled.length >= 4) {
           const correctCard = shuffled[i];
           const availableWrong = shuffled.filter((_, idx) => idx !== i);
@@ -136,39 +177,10 @@ const FlashcardStudyPage = () => {
       }
 
       // Generate True/False questions
-      for (let i = numQuestions; i < numQuestions * 2 && i < shuffled.length; i++) {
-        const card = shuffled[i];
+      for (let i = 0; i < numTrueFalse && i < shuffled.length; i++) {
+        const card = shuffled[(numMCQs + i) % shuffled.length];
         const isTrue = Math.random() > 0.5;
-        const wrongCardIndex = (i + 1) % shuffled.length;
-        const displayAnswer = isTrue ? card.back_content : shuffled[wrongCardIndex].back_content;
-        
-        questions.push({
-          type: 'truefalse',
-          question: card.front_content,
-          displayAnswer: displayAnswer,
-          correctAnswer: isTrue
-        });
-      }
-    } else {
-      // Regular test: 1 MCQ and 2 True/False
-      if (shuffled.length >= 4) {
-        const correctCard = shuffled[0];
-        const wrongOptions = shuffled.slice(1, 4);
-        const options = [correctCard.back_content, ...wrongOptions.map(c => c.back_content)]
-          .sort(() => Math.random() - 0.5);
-        
-        questions.push({
-          type: 'mcq',
-          question: correctCard.front_content,
-          options: options,
-          correctAnswer: correctCard.back_content
-        });
-      }
-
-      for (let i = 1; i < Math.min(3, shuffled.length); i++) {
-        const card = shuffled[i];
-        const isTrue = Math.random() > 0.5;
-        const displayAnswer = isTrue ? card.back_content : shuffled[(i + 1) % shuffled.length].back_content;
+        const displayAnswer = isTrue ? card.back_content : shuffled[(numMCQs + i + 1) % shuffled.length].back_content;
         
         questions.push({
           type: 'truefalse',
@@ -184,7 +196,7 @@ const FlashcardStudyPage = () => {
 
   // Check if test should be shown
   const shouldShowTest = (nextCard) => {
-    if (nextCard > 0 && nextCard % 5 === 0 && nextCard < totalCards) {
+    if (nextCard > 0 && nextCard % 20 === 0 && nextCard < totalCards) {
       return true;
     }
     if (nextCard === totalCards) {
@@ -233,12 +245,14 @@ const FlashcardStudyPage = () => {
     const isFinal = nextCard === totalCards || currentCard === totalCards - 1;
     
     if (isFinal) {
-      // Final test: random 10 cards from all
+      // Final test: random 30 cards from all (or all cards if less than 30)
       const allIndices = Array.from({ length: totalCards }, (_, i) => i);
-      cardIndices = allIndices.sort(() => Math.random() - 0.5).slice(0, 10);
+      const numCards = Math.min(30, totalCards);
+      cardIndices = allIndices.sort(() => Math.random() - 0.5).slice(0, numCards);
     } else {
-      // Regular test: previous 5 cards
-      cardIndices = Array.from({ length: 5 }, (_, i) => nextCard - 5 + i);
+      // Regular test: previous 20 cards (or available cards if less than 20)
+      const numCards = Math.min(20, nextCard);
+      cardIndices = Array.from({ length: numCards }, (_, i) => nextCard - numCards + i);
     }
     
     const questions = generateTestQuestions(cardIndices, isFinal);
@@ -253,6 +267,9 @@ const FlashcardStudyPage = () => {
 
   const skipTest = () => {
     setShowTestPrompt(false);
+    setShowTest(false);
+    setTestSubmitted(false);
+    setTestResults(null);
     if (currentCard < totalCards - 1) {
       setCurrentCard(currentCard + 1);
       setIsFlipped(false);
@@ -260,7 +277,6 @@ const FlashcardStudyPage = () => {
   };
 
   const handlePrevious = () => {
-    // Stop any ongoing speech
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
     }
@@ -348,11 +364,38 @@ const FlashcardStudyPage = () => {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-slate-50">
         <header className="bg-white shadow-sm border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-6 py-4">
-            <div className="text-center">
-              <h1 className="text-xl md:text-2xl font-bold text-slate-800">{set_name}</h1>
-              <p className="text-sm text-slate-500">
-                🇩🇪 German • {prof_level?.toUpperCase()} Level
-              </p>
+            <div className="flex items-center justify-between gap-4">
+              
+              {/* Left: Back navigation (responsive) */}
+              <div className="flex items-center">
+                {/* Mobile chevron */}
+                <button
+                  onClick={() => navigate(`/practice/${prof_level}`)}
+                  className="flex md:hidden items-center text-slate-600 hover:text-slate-800 transition-colors"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+
+                {/* Desktop button */}
+                <button
+                  onClick={() => navigate(`/practice/${prof_level}`)}
+                  className="hidden md:flex items-center gap-2 text-slate-600 hover:text-slate-800 transition-colors"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                  <span className="font-medium">Back to Chapters</span>
+                </button>
+              </div>
+
+              {/* Center: Title */}
+              <div className="text-center flex-1">
+                <h1 className="text-xl md:text-2xl font-bold text-slate-800">{set_name}</h1>
+                <p className="text-sm text-slate-500">
+                  🇩🇪 German • {prof_level?.toUpperCase()} Level
+                </p>
+              </div>
+
+              {/* Right: Spacer for symmetry on desktop */}
+              <div className="w-5 md:w-32"></div>
             </div>
           </div>
         </header>
@@ -364,7 +407,7 @@ const FlashcardStudyPage = () => {
             </div>
             
             <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
-              {isAtFinalTest ? '🎯 Final Assessment Ready!' : '✨ Test Checkpoint!'}
+              {isAtFinalTest ? ' Final Assessment Ready!' : ' Test Checkpoint!'}
             </h2>
             
             <p className="text-lg text-slate-600 mb-8">
@@ -373,20 +416,6 @@ const FlashcardStudyPage = () => {
                 : `You've reached card ${testPosition}. Time for a quick test to reinforce your learning!`}
             </p>
 
-            <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-8 rounded-lg text-left">
-              <div className="flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h3 className="font-semibold text-amber-900 mb-1">What's Next?</h3>
-                  <ul className="text-sm text-amber-700 space-y-1">
-                    <li>• <strong>Go Right (→)</strong> to take the {isAtFinalTest ? 'final' : ''} test</li>
-                    <li>• <strong>Go Left (←)</strong> to return to the previous card</li>
-                    {!isAtFinalTest && <li>• You can skip the test and continue studying</li>}
-                  </ul>
-                </div>
-              </div>
-            </div>
-
             <div className="flex flex-col md:flex-row gap-4 justify-center">
               <button
                 onClick={handlePrevious}
@@ -394,6 +423,14 @@ const FlashcardStudyPage = () => {
               >
                 <ChevronLeft className="w-5 h-5" />
                 Go Back
+              </button>
+
+              <button
+                onClick={startTest}
+                className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all font-semibold flex items-center justify-center gap-2"
+              >
+                {isAtFinalTest ? 'Start Final Test' : 'Take Test'}
+                <ChevronRight className="w-5 h-5" />
               </button>
               
               {!isAtFinalTest && (
@@ -405,14 +442,6 @@ const FlashcardStudyPage = () => {
                   <ChevronRight className="w-5 h-5" />
                 </button>
               )}
-              
-              <button
-                onClick={startTest}
-                className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all font-semibold flex items-center justify-center gap-2"
-              >
-                {isAtFinalTest ? 'Start Final Test' : 'Take Test'}
-                <ChevronRight className="w-5 h-5" />
-              </button>
             </div>
           </div>
         </div>
@@ -425,15 +454,42 @@ const FlashcardStudyPage = () => {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-slate-50">
         <header className="bg-white shadow-sm border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-6 py-4">
-            <div className="text-center">
-              <h1 className="text-xl md:text-2xl font-bold text-slate-800">
-                {isFinalTest ? '🎯 Final Assessment' : 'Quick Test'}
-              </h1>
-              <p className="text-sm text-slate-500">
-                {isFinalTest 
-                  ? 'Comprehensive review of all cards' 
-                  : `Review Cards ${Math.max(0, currentCard - 4)} - ${currentCard}`}
-              </p>
+            <div className="flex items-center justify-between gap-4">
+              
+              {/* Left: Back navigation (responsive) */}
+              <div className="flex items-center">
+                {/* Mobile chevron */}
+                <button
+                  onClick={() => navigate(`/practice/${prof_level}`)}
+                  className="flex md:hidden items-center text-slate-600 hover:text-slate-800 transition-colors"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+
+                {/* Desktop button */}
+                <button
+                  onClick={() => navigate(`/practice/${prof_level}`)}
+                  className="hidden md:flex items-center gap-2 text-slate-600 hover:text-slate-800 transition-colors"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                  <span className="font-medium">Back to Chapters</span>
+                </button>
+              </div>
+
+              {/* Center: Title */}
+              <div className="text-center flex-1">
+                <h1 className="text-xl md:text-2xl font-bold text-slate-800">
+                  {isFinalTest ? ' Final Assessment' : 'Quick Test'}
+                </h1>
+                <p className="text-sm text-slate-500">
+                  {isFinalTest 
+                    ? 'Comprehensive review of all cards' 
+                    : `Review Cards ${Math.max(0, currentCard - 19)} - ${currentCard}`}
+                </p>
+              </div>
+
+              {/* Right: Spacer for symmetry on desktop */}
+              <div className="w-5 md:w-32"></div>
             </div>
           </div>
         </header>
@@ -450,7 +506,7 @@ const FlashcardStudyPage = () => {
                   <AlertCircle className={`w-5 h-5 mt-0.5 ${
                     isFinalTest ? 'text-purple-600' : 'text-amber-600'
                   }`} />
-                  <div>
+                  <div className="flex-1">
                     <h3 className={`font-semibold ${
                       isFinalTest ? 'text-purple-900' : 'text-amber-900'
                     }`}>
@@ -464,6 +520,15 @@ const FlashcardStudyPage = () => {
                         : 'Complete this test to continue studying. You need 60% to pass.'}
                     </p>
                   </div>
+                  {!isFinalTest && (
+                    <button
+                      onClick={skipTest}
+                      className="px-4 py-2 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg transition-all font-medium text-sm flex items-center gap-2 whitespace-nowrap"
+                    >
+                      Skip Test
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -602,12 +667,23 @@ const FlashcardStudyPage = () => {
               </div>
 
               {testResults.passed ? (
-                <button
-                  onClick={continueAfterTest}
-                  className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all font-semibold"
-                >
-                  {isFinalTest ? 'Complete Study Session' : 'Continue Studying'}
-                </button>
+                <div className='space-y-3'>
+                  <button
+                    onClick={continueAfterTest}
+                    className="w-full px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all font-semibold"
+                  >
+                    {isFinalTest ? 'Complete Study Session' : 'Continue Studying'}
+                  </button>
+                  {!isFinalTest && (
+                    <button
+                      onClick={skipTest}
+                      className="w-full px-8 py-4 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl shadow-lg hover:shadow-xl transition-all font-semibold flex items-center justify-center gap-2"
+                    >
+                      Skip and Keep Practicing
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                  )}
+                </div>
               ) : (
                 <div className="space-y-3">
                   <button
@@ -634,20 +710,38 @@ const FlashcardStudyPage = () => {
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <button onClick={() => {
-              navigate(`/practice/${prof_level}`);
-            }} className="hidden md:flex items-center gap-2 text-slate-600 hover:text-slate-800 transition-colors">
-              <ChevronLeft className="w-5 h-5" />
-              <span className="font-medium">Back to Chapters</span>
-            </button>
-            <div className="text-center">
+          <div className="flex items-center justify-between gap-4">
+            
+            {/* Left: Back navigation (responsive) */}
+            <div className="flex items-center">
+              {/* Mobile chevron */}
+              <button
+                onClick={() => navigate(`/practice/${prof_level}`)}
+                className="flex md:hidden items-center text-slate-600 hover:text-slate-800 transition-colors"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+
+              {/* Desktop button */}
+              <button
+                onClick={() => navigate(`/practice/${prof_level}`)}
+                className="hidden md:flex items-center gap-2 text-slate-600 hover:text-slate-800 transition-colors"
+              >
+                <ChevronLeft className="w-5 h-5" />
+                <span className="font-medium">Back to Chapters</span>
+              </button>
+            </div>
+
+            {/* Center: Title */}
+            <div className="text-center flex-1">
               <h1 className="text-xl md:text-2xl font-bold text-slate-800">{set_name}</h1>
               <p className="text-sm text-slate-500">
                 🇩🇪 German • {prof_level?.toUpperCase()} Level
               </p>
             </div>
-            <div className="hidden md:block w-32"></div>
+
+            {/* Right: Spacer for symmetry on desktop */}
+            <div className="w-5 md:w-32"></div>
           </div>
         </div>
       </header>
@@ -665,7 +759,7 @@ const FlashcardStudyPage = () => {
           </div>
           <div className="relative w-full h-3 bg-slate-100 rounded-full overflow-visible">
             <div
-              className="h-full bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full transition-all duration-300"
+              className="h-full bg-gradient-to-r from-slate-500 to-slate-600 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             ></div>
             
@@ -702,11 +796,11 @@ const FlashcardStudyPage = () => {
               className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
               style={{ left: '100%' }}
             >
-              <div className="w-7 h-7 rounded-full border-2 bg-purple-500 border-purple-600 flex items-center justify-center">
+              <div className="w-7 h-7 rounded-full border-2 bg-amber-500 border-amber-600 flex items-center justify-center">
                 <Target className="w-4 h-4 text-white" />
               </div>
               <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2 whitespace-nowrap">
-                <span className="text-xs text-purple-600 font-bold">Final</span>
+                <span className="text-xs text-amber-600 font-bold">Final</span>
               </div>
             </div>
           </div>
@@ -802,9 +896,6 @@ const FlashcardStudyPage = () => {
                 </button>
 
                 <div className="relative z-10 w-full">
-                  <div className="inline-block px-4 py-2 bg-cyan-100 text-cyan-700 rounded-full text-sm font-semibold mb-6">
-                    QUESTION
-                  </div>
                   <div className="text-2xl md:text-4xl font-bold text-slate-800 text-center mb-8">
                     {flashcardSet[currentCard]?.front_content}
                   </div>
@@ -841,9 +932,6 @@ const FlashcardStudyPage = () => {
                 </button>
 
                 <div className="relative z-10 w-full">
-                  <div className="inline-block px-4 py-2 bg-white/20 text-white rounded-full text-sm font-semibold mb-6 backdrop-blur-sm">
-                    ANSWER
-                  </div>
                   <div className="text-3xl md:text-5xl font-bold text-white text-center mb-8 drop-shadow-lg">
                     {flashcardSet[currentCard]?.back_content}
                   </div>
@@ -855,41 +943,6 @@ const FlashcardStudyPage = () => {
               </div>
             </div>
           </div>
-        </div>
-
-
-        {/* Knowledge Buttons */}
-        {isFlipped && (
-          <div className="flex items-center justify-center gap-2 md:gap-4 mb-8">
-            <button
-              onClick={markAsUnknown}
-              className="px-4 md:px-8 py-3 md:py-4 bg-red-500 hover:bg-red-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all flex items-center gap-2 text-sm md:text-base"
-            >
-              <X className="w-5 h-5" />
-              Still Learning
-            </button>
-
-            <button
-              onClick={markAsKnown}
-              className="px-4 md:px-8 py-3 md:py-4 bg-green-500 hover:bg-green-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all flex items-center gap-2 text-sm md:text-base"
-            >
-              <Check className="w-5 h-5" />
-              Got It
-            </button>
-          </div>
-        )}
-
-        {/* Action Buttons */}
-        <div className="flex flex-col md:flex-row gap-4 justify-center px-4">
-          <button className="w-full md:w-auto px-8 py-4 bg-white text-slate-700 hover:bg-slate-50 rounded-xl shadow-lg hover:shadow-xl transition-all font-semibold border-2 border-slate-200">
-            Study Again
-          </button>
-          <button 
-            onClick={handleNext}
-            className="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all font-semibold"
-          >
-            {currentCard === totalCards - 1 ? 'Take Final Test' : 'Continue'}
-          </button>
         </div>
       </div>
     </div>

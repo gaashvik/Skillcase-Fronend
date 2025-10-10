@@ -2,7 +2,7 @@ import axios from "axios";
 import { store } from "../redux/store";
 
 const api = axios.create({
-  baseURL: "https://learning-platform-1-6kx3.onrender.com/api",
+  baseURL:import.meta.env.VITE_BACKEND_URL,
 });
 
 api.interceptors.request.use((config) => {
