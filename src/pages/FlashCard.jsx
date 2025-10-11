@@ -261,7 +261,7 @@ const FlashcardStudyPage = () => {
         });
       }
     else{
-      const displayAnswer = isTrue ? card.front_content : shuffled[wrongCardIndex].back_content;
+      const displayAnswer = isTrue ? card.front_content : shuffled[wrongCardIndex].front_content;
         console.log(displayAnswer);
         questions.push({
           type: 'truefalse',
