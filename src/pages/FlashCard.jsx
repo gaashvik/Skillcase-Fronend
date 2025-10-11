@@ -1027,8 +1027,8 @@ const FlashcardStudyPage = () => {
               className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
               style={{ left: '100%' }}
             >
-              <div className={`w-7 h-7 rounded-full  ${!completedFinalTest ? ("bg-amber-500"):("bg-green-500 ")}  flex items-center justify-center`} onClick={handleTestClick}>
-                {completedFinalTest ? (<Check className="w-3 h-3 text-white" />):(<Target className="w-4 h-4 text-white"/>)}
+              <div className={`w-7 h-7 rounded-full  ${completedFinalTest === true ? ("bg-green-500 "):("bg-amber-500 ")}  flex items-center justify-center`} onClick={handleTestClick}>
+                {completedFinalTest === true ? (<Check className="w-3 h-3 text-white" />):(<Target className="w-4 h-4 text-white"/>)}
               </div>
               {/* <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2 whitespace-nowrap">
                 <span className="text-xs text-amber-600 font-bold">Final</span>

@@ -56,33 +56,32 @@ export default function TwoColumnSection() {
   return (
     <section className="w-screen min-h-screen flex flex-col md:flex-row p-5 bg-blue-50">
       {/* Left column */}
-      <div className="w-full md:w-1/3 md:mb-20 bg-slate-900 text-white flex flex-col md:flex-col justify-between md:justify-center rounded-3xl md:m-2 p-10 space-y-6">
-      <div className='flex flex-wrap flex-row md:flex-col justify-between md:space-y-6'>
-        <div className="text-5xl md:text-3xl  font-bold">{prof_level.toUpperCase()}</div>
-        <div className="flex items-center gap-2 ">
-          <Layers className="w-5 h-5 text-green-400" />
-          <span>{chapters.length} Chapter(s)</span>
-        </div>
-        <div>
-          <div className="flex gap-2 mb-2">
-            <BarChart2 className="w-12 h-5 text-amber-400" />
-            <span>Progress</span>
-          </div>
-          <div className="w-full md:w-full bg-slate-700 rounded-full h-3">
-            <div className="bg-amber-500 h-3 rounded-full" style={{ width: `${progress}%` }}></div>
-          </div>
-        </div>
-        </div>
-          <div className="flex gap-3 pt-4">
-          <button className="flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg">
-            <Play className="w-5 h-5" /> Practice
-          </button>
-          <button className="flex items-center gap-2 border border-slate-400 px-4 py-2 rounded-lg hover:bg-slate-800">
-            <Bookmark className="w-5 h-5" />
-          </button>
-        </div>
-
+<div className="w-full md:w-1/3 md:mb-20 bg-slate-900 text-white flex flex-col md:flex-col justify-between md:justify-center rounded-3xl md:m-2 p-10 space-y-3">
+  <div className='flex flex-col md:flex-col space-y-4 md:space-y-6'>
+    <div className="text-5xl md:text-3xl font-bold">{prof_level.toUpperCase()}</div>
+    <div className="flex items-center gap-2">
+      <Layers className="w-5 h-5 text-green-400 flex-shrink-0" />
+      <span className="whitespace-nowrap">{chapters.length} Chapter(s)</span>
+    </div>
+    <div>
+      <div className="flex gap-2 mb-2 items-center">
+        <BarChart2 className="w-5 h-5 text-amber-400 flex-shrink-0" />
+        <span>Progress</span>
       </div>
+      <div className="w-full bg-slate-700 rounded-full h-3">
+        <div className="bg-amber-500 h-3 rounded-full" style={{ width: `${progress}%` }}></div>
+      </div>
+    </div>
+  </div>
+  <div className="flex gap-3 pt-4">
+    <button className="flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg">
+      <Play className="w-5 h-5" /> Practice
+    </button>
+    <button className="flex items-center gap-2 border border-slate-400 px-4 py-2 rounded-lg hover:bg-slate-800">
+      <Bookmark className="w-5 h-5" />
+    </button>
+  </div>
+</div>
 
       {/* Right column - Desktop: List view, Mobile: Grid view */}
       <div className="w-full md:w-2/3 mt-5 max-h-screen overflow-y-auto hide-scrollbar">
