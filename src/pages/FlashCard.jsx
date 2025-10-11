@@ -476,7 +476,7 @@ const FlashcardStudyPage = () => {
           const res = await api.post('/practice/saveFS',{
             "user_id" : user.user_id,
             "set_id" : set_id,
-            "test_status" : passed
+            "status" : passed
           })
       }
       catch (err){
