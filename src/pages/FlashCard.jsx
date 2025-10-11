@@ -898,15 +898,6 @@ const FlashcardStudyPage = () => {
                   >
                     {isFinalTest ? 'Complete Study Session' : 'Continue Studying'}
                   </button>
-                  {!isFinalTest && (
-                    <button
-                      onClick={skipTest}
-                      className="w-full px-8 py-4 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl shadow-lg hover:shadow-xl transition-all font-semibold flex items-center justify-center gap-2"
-                    >
-                      Skip and Keep Practicing
-                      <ChevronRight className="w-5 h-5" />
-                    </button>
-                  )}
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -920,6 +911,15 @@ const FlashcardStudyPage = () => {
                     Retry Test
                   </button>
                   <p className="text-sm text-slate-600">You can retry to improve your score</p>
+                  {!isFinalTest && (
+                    <button
+                      onClick={skipTest}
+                      className="w-full px-8 py-4 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl shadow-lg hover:shadow-xl transition-all font-semibold flex items-center justify-center gap-2"
+                    >
+                      Skip and Keep Practicing
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                  )}
                 </div>
               )}
             </div>
