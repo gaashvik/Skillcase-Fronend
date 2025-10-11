@@ -1,8 +1,9 @@
 import { useState, useRef, use, useEffect } from "react";
 import { 
   BookOpen, Clock, BarChart3, Layers, Award, 
-  BarChart2, Play, Bookmark, ChevronDown, ChevronUp, ChevronLeft, ChevronRight 
+  BarChart2, Play, Bookmark, ChevronDown, ChevronUp, ChevronLeft, ChevronRight ,Check
 } from "lucide-react";
+
 import "../css/ChapterSelect.css"
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -11,13 +12,20 @@ import api from "../api/axios";
 export default function TwoColumnSection() {
   const {prof_level} = useParams();
   const [chapters, setChapters] = useState([]);
+  const [progress,setProgress] = useState(null);
 
   useEffect(() => {
     const getCards = async () => {
         try{
           const res = await api.get(`/practice/allFlashSet/${prof_level}`);
           setChapters(res.data);
-          console.log(chapters);
+          const chapter_num = res.data.length;
+          const completed_chap_num = res.data.filter(ch => ch.test_status).length;
+          console.log(chapter_num);
+          console.log(completed_chap_num);
+          const prog = (completed_chap_num/chapter_num)*100;
+          console.log(prog);
+          setProgress(prog);
         }
         catch(err){
           console.error(err);
@@ -61,7 +69,7 @@ export default function TwoColumnSection() {
             <span>Progress</span>
           </div>
           <div className="w-full md:w-full bg-slate-700 rounded-full h-3">
-            <div className="bg-amber-500 h-3 rounded-full" style={{ width: "0%" }}></div>
+            <div className="bg-amber-500 h-3 rounded-full" style={{ width: `${progress}%` }}></div>
           </div>
         </div>
         </div>
@@ -86,13 +94,13 @@ export default function TwoColumnSection() {
               <div 
                 key={chapter.set_id}
                 onClick={() => {
-                  navigate(`/practice/${prof_level}/${chapter.set_id}?set_name=${encodeURIComponent(chapter.set_name)}`);
+                  navigate(`/practice/${prof_level}/${chapter.set_id}?set_name=${encodeURIComponent(chapter.set_name)}&test_status=${chapter.test_status}`);
                 }}
                 className={`flex items-center justify-between p-4 rounded-lg cursor-pointer bg-gradient-to-r ${getDifficultyStyles(color).sectionBg} hover:opacity-90 transition-all border border-gray-700/50`}
               >
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                   <div className={`w-10 h-10 ${getDifficultyStyles(color).iconBg} rounded-lg flex items-center justify-center flex-shrink-0`}>
-                    <Award className={`w-5 h-5 ${getDifficultyStyles(color).iconColor}`} />
+                    {!chapter.test_status ? (<Award className={`w-5 h-5 ${getDifficultyStyles(color).iconColor}`} />):(<Check className="text-green-500 w-5 h-5" />)}
                   </div>
                   <div className="min-w-0 flex-1">
                     <h3 className="text-lg md:text-xl font-semibold text-white truncate">
@@ -123,7 +131,7 @@ export default function TwoColumnSection() {
               >
                 <div className="flex flex-col h-full">
                   <div className={`w-7 h-7 ${getDifficultyStyles(color).iconBg} rounded-lg flex items-center justify-center mb-2`}>
-                    <Award className={`w-4 h-4 ${getDifficultyStyles(color).iconColor}`} />
+                    {!chapter.test_status ? (<Award className={`w-5 h-5 ${getDifficultyStyles(color).iconColor}`} />):(<Check className="text-green-500 w-5 h-5" />)}
                   </div>
                   <h3 className="text-xs font-semibold text-white leading-tight mb-1 flex-grow line-clamp-2">
                     {chapter.set_name.charAt(0).toUpperCase() + chapter.set_name.slice(1)}

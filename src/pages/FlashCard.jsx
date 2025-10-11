@@ -16,6 +16,7 @@ const FlashcardStudyPage = () => {
   const [testSubmitted, setTestSubmitted] = useState(false);
   const [testResults, setTestResults] = useState(null);
   const [completedTests, setCompletedTests] = useState(new Set());
+  const [completedFinalTest,setCompletedFinalTest]= useState(false);
   const [isFinalTest, setIsFinalTest] = useState(false);
   const [showTestPrompt, setShowTestPrompt] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -29,6 +30,7 @@ const FlashcardStudyPage = () => {
   const { prof_level, set_id } = useParams();
   const [searchParams] = useSearchParams();
   const set_name = searchParams.get("set_name");
+  const test_status = searchParams.get("test_status");
   const navigate = useNavigate();
 
   // Speech synthesis function
@@ -77,6 +79,12 @@ const FlashcardStudyPage = () => {
     }
     getCards();
   }, []);
+  useEffect(()=>{
+    if (test_status){
+    setCompletedFinalTest(test_status);
+    }
+    console.log(completedFinalTest);
+  },[]);
 
   useEffect(() => {
     return () => {
@@ -457,6 +465,22 @@ const FlashcardStudyPage = () => {
       total: testQuestions.length,
       passed
     });
+
+    if (isFinalTest && passed){
+      const saveState = async () => {
+        try {
+          const res = await api.post('/practice/saveFS',{
+            "user_id" : user.user_id,
+            "set_id" : set_id,
+            "test_status" : passed
+          })
+      }
+      catch (err){
+        console.log(err);
+      }
+      };
+      saveState();
+    }
     
     if (!isFinalTest) {
       const newCompleted = new Set(completedTests);
@@ -1003,8 +1027,8 @@ const FlashcardStudyPage = () => {
               className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
               style={{ left: '100%' }}
             >
-              <div className="w-7 h-7 rounded-full  bg-amber-500  flex items-center justify-center" onClick={handleTestClick}>
-                <Target className="w-4 h-4 text-white" />
+              <div className={`w-7 h-7 rounded-full  ${!completedFinalTest ? ("bg-amber-500"):("bg-green-500 ")}  flex items-center justify-center`} onClick={handleTestClick}>
+                {completedFinalTest ? (<Check className="w-3 h-3 text-white" />):(<Target className="w-4 h-4 text-white"/>)}
               </div>
               {/* <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2 whitespace-nowrap">
                 <span className="text-xs text-amber-600 font-bold">Final</span>
