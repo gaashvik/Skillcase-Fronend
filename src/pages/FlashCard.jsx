@@ -191,7 +191,7 @@ const FlashcardStudyPage = () => {
         });
       }
     else{
-      const displayAnswer = isTrue ? card.front_content : shuffled[wrongCardIndex].front;
+      const displayAnswer = isTrue ? card.front_content : shuffled[wrongCardIndex].back_content;
         
         questions.push({
           type: 'truefalse',
@@ -261,7 +261,7 @@ const FlashcardStudyPage = () => {
         });
       }
     else{
-      const displayAnswer = isTrue ? card.front_content : shuffled[wrongCardIndex].front;
+      const displayAnswer = isTrue ? card.front_content : shuffled[wrongCardIndex].back_content;
         console.log(displayAnswer);
         questions.push({
           type: 'truefalse',
