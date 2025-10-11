@@ -12,7 +12,7 @@ import api from "../api/axios";
 export default function TwoColumnSection() {
   const {prof_level} = useParams();
   const [chapters, setChapters] = useState([]);
-  const [progress,setProgress] = useState(null);
+  const [progress,setProgress] = useState(0);
 
   useEffect(() => {
     const getCards = async () => {
