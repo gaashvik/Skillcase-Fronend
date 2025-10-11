@@ -241,11 +241,13 @@ const FlashcardStudyPage = () => {
           }
         }
       }
-
+      console.log(shuffled.length);
       for (let i = 0; i < numTrueFalse && i < shuffled.length; i++) {
         const card = shuffled[(numMCQs + i) % shuffled.length];
         const isTrue = Math.random() > 0.5;
         const wrongCardIndex = (numMCQs + i + 1) % shuffled.length;
+
+        console.log(wrongCardIndex);
 
         if (i%2 === 0){
         const displayAnswer = isTrue ? card.back_content : shuffled[wrongCardIndex].back_content;
