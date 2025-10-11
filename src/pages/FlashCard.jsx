@@ -461,11 +461,11 @@ const FlashcardStudyPage = () => {
     if (!isFinalTest) {
       const newCompleted = new Set(completedTests);
       newCompleted.add(currentCard + 1);
+      if (passed){
       setCompletedTests(newCompleted);
+      }
     }
-    if (passed){
     setTestSubmitted(true);
-    }
   };
 
   const continueAfterTest = () => {
