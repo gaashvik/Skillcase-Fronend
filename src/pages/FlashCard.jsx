@@ -54,14 +54,14 @@ const FlashcardStudyPage = () => {
   const handleSpeakFront = (e) => {
     e.stopPropagation();
     if (flashcardSet[currentCard]?.front_content) {
-      speakText(flashcardSet[currentCard].front_content);
+      speakText(flashcardSet[currentCard].front_content,'en-EN');
     }
   };
 
   const handleSpeakBack = (e) => {
     e.stopPropagation();
     if (flashcardSet[currentCard]?.back_content) {
-      speakText(flashcardSet[currentCard].back_content);
+      speakText(flashcardSet[currentCard].back_content,'de-DE');
     }
   };
 
