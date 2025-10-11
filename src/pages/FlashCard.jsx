@@ -659,7 +659,7 @@ const FlashcardStudyPage = () => {
                         {question.format === 'std' ? (
                           <>
                           <div className="flex items-center gap-2 mb-2">
-                        <h3 className="font-semibold text-slate-800">what does "{question.question}" mean in English?</h3>
+                        <h3 className="font-semibold text-slate-800">what does "{question.question}" mean in German?</h3>
                         <span className={`text-xs px-2 py-1 rounded-full ${
                           question.type === 'mcq' 
                             ? 'bg-cyan-100 text-cyan-700' 
@@ -693,7 +693,7 @@ const FlashcardStudyPage = () => {
                           </>
                         ):(<>
                                                 <div className="flex items-center gap-2 mb-2">
-                        <h3 className="font-semibold text-slate-800">what does "{question.question}" mean in German?</h3>
+                        <h3 className="font-semibold text-slate-800">what does "{question.question}" mean in English?</h3>
                         <span className={`text-xs px-2 py-1 rounded-full ${
                           question.type === 'mcq' 
                             ? 'bg-cyan-100 text-cyan-700' 
