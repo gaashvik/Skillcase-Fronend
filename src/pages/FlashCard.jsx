@@ -118,7 +118,7 @@ const FlashcardStudyPage = () => {
   };
 
   const generateTestQuestions = (cardIndices, isFinal = false) => {
-    const questions = [];
+    var questions = [];
     const availableCards = cardIndices.map(i => flashcardSet[i]).filter(Boolean);
     
     if (availableCards.length === 0) return [];
@@ -136,15 +136,31 @@ const FlashcardStudyPage = () => {
           const wrongOptions = availableWrong.slice(0, 3);
           
           if (wrongOptions.length === 3) {
+            if (i%2 === 0){
             const options = [correctCard.back_content, ...wrongOptions.map(c => c.back_content)]
               .sort(() => Math.random() - 0.5);
             
             questions.push({
               type: 'mcq',
+              format:'std',
               question: correctCard.front_content,
               options: options,
               correctAnswer: correctCard.back_content
             });
+          }
+          else {
+             const options = [correctCard.front_content, ...wrongOptions.map(c => c.front_content)]
+              .sort(() => Math.random() - 0.5);
+            
+            questions.push({
+              type: 'mcq',
+              format:'inv',
+              question: correctCard.back_content,
+              options: options,
+              correctAnswer: correctCard.front_content
+            });
+
+          }
           }
         }
       }
@@ -153,15 +169,30 @@ const FlashcardStudyPage = () => {
         const card = shuffled[(numMCQs + i) % shuffled.length];
         const isTrue = Math.random() > 0.5;
         const wrongCardIndex = (numMCQs + i + 1) % shuffled.length;
+
+        if (i%2 == 0){
         const displayAnswer = isTrue ? card.back_content : shuffled[wrongCardIndex].back_content;
         
         questions.push({
           type: 'truefalse',
+          format:'std',
           question: card.front_content,
           displayAnswer: displayAnswer,
           correctAnswer: isTrue
         });
       }
+    else{
+      const displayAnswer = isTrue ? card.front_content : shuffled[wrongCardIndex].front;
+        
+        questions.push({
+          type: 'truefalse',
+          format:'inv',
+          question: card.back_content,
+          displayAnswer: displayAnswer,
+          correctAnswer: isTrue
+        });
+    }
+  }
     } else {
       const numMCQs = 5;
       const numTrueFalse = 5;
@@ -173,15 +204,31 @@ const FlashcardStudyPage = () => {
           const wrongOptions = availableWrong.slice(0, 3);
           
           if (wrongOptions.length === 3) {
+            if (i%2 === 0){
             const options = [correctCard.back_content, ...wrongOptions.map(c => c.back_content)]
               .sort(() => Math.random() - 0.5);
             
             questions.push({
               type: 'mcq',
+              format: 'std',
               question: correctCard.front_content,
               options: options,
               correctAnswer: correctCard.back_content
             });
+          }
+          else {
+             const options = [correctCard.front_content, ...wrongOptions.map(c => c.front_content)]
+              .sort(() => Math.random() - 0.5);
+            
+            questions.push({
+              type: 'mcq',
+              format:'inv',
+              question: correctCard.back_content,
+              options: options,
+              correctAnswer: correctCard.front_content
+            });
+
+          }
           }
         }
       }
@@ -189,17 +236,31 @@ const FlashcardStudyPage = () => {
       for (let i = 0; i < numTrueFalse && i < shuffled.length; i++) {
         const card = shuffled[(numMCQs + i) % shuffled.length];
         const isTrue = Math.random() > 0.5;
-        const displayAnswer = isTrue ? card.back_content : shuffled[(numMCQs + i + 1) % shuffled.length].back_content;
+        if (i%2 == 0){
+        const displayAnswer = isTrue ? card.back_content : shuffled[wrongCardIndex].back_content;
         
         questions.push({
           type: 'truefalse',
+          format:'std',
           question: card.front_content,
           displayAnswer: displayAnswer,
           correctAnswer: isTrue
         });
       }
+    else{
+      const displayAnswer = isTrue ? card.front_content : shuffled[wrongCardIndex].front;
+        
+        questions.push({
+          type: 'truefalse',
+          format:'inv',
+          question: card.back_content,
+          displayAnswer: displayAnswer,
+          correctAnswer: isTrue
+        });
     }
-
+      }
+    }
+    questions = [...questions].sort(() => Math.random() - 0.5);
     return questions;
   };
 
@@ -563,7 +624,7 @@ const FlashcardStudyPage = () => {
                       isFinalTest ? 'text-purple-700' : 'text-amber-700'
                     }`}>
                       {isFinalTest 
-                        ? `Complete this comprehensive test with ${testQuestions.filter(q => q.type === 'mcq').length} MCQs and ${testQuestions.filter(q => q.type === 'truefalse').length} True/False questions. You need 60% to pass.`
+                        ? `Complete this comprehensive test with ${testQuestions.filter(q => q.type === 'mcq').length} MCQs and ${testQuestions.filter(q =>  q.type === 'truefalse').length} True/False questions. You need 60% to pass.`
                         : 'Complete this test to continue studying. You need 60% to pass.'}
                     </p>
                   </div>
@@ -595,8 +656,9 @@ const FlashcardStudyPage = () => {
                       
                       {question.type === 'mcq' ? (
                         <>
-                        
-                        <div className="flex items-center gap-2 mb-2">
+                        {question.format === 'std' ? (
+                          <>
+                          <div className="flex items-center gap-2 mb-2">
                         <h3 className="font-semibold text-slate-800">what does "{question.question}" mean in German?</h3>
                         <span className={`text-xs px-2 py-1 rounded-full ${
                           question.type === 'mcq' 
@@ -628,11 +690,50 @@ const FlashcardStudyPage = () => {
                             </label>
                           ))}
                         </div>
+                          </>
+                        ):(<>
+                                                <div className="flex items-center gap-2 mb-2">
+                        <h3 className="font-semibold text-slate-800">what does "{question.question}" mean in English?</h3>
+                        <span className={`text-xs px-2 py-1 rounded-full ${
+                          question.type === 'mcq' 
+                            ? 'bg-cyan-100 text-cyan-700' 
+                            : 'bg-purple-100 text-purple-700'
+                        }`}>
+                          {question.type === 'mcq' ? 'MCQ' : 'T/F'}
+                        </span>
+                      </div>
+                        <div className="space-y-2">
+                          {question.options.map((option, oIndex) => (
+                            <label
+                              key={oIndex}
+                              className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                                userAnswers[qIndex] === option
+                                  ? 'border-cyan-500 bg-cyan-50'
+                                  : 'border-slate-200 hover:border-slate-300'
+                              }`}
+                            >
+                              <input
+                                type="radio"
+                                name={`question-${qIndex}`}
+                                value={option}
+                                checked={userAnswers[qIndex] === option}
+                                onChange={() => handleTestAnswer(qIndex, option)}
+                                className="w-4 h-4 text-cyan-600"
+                              />
+                              <span className="text-slate-700">{option}</span>
+                            </label>
+                          ))}
+                        </div>
+                        
+                        
+                        </>)}
                         </>
                       ) : (
                         <>
-                        <div className="flex items-center gap-2 mb-2">
-                        <h3 className="font-semibold text-slate-800">"{question.question}" means "{question.displayAnswer}" in German?</h3>
+                        {question.format === 'std' ? (
+                          <>
+                           <div className="flex items-center gap-2 mb-2">
+                        <h3 className="font-semibold text-slate-800">"{question.question}" means "{question.displayAnswer}" in German</h3>
                         <span className={`text-xs px-2 py-1 rounded-full ${
                           question.type === 'mcq' 
                             ? 'bg-cyan-100 text-cyan-700' 
@@ -680,6 +781,65 @@ const FlashcardStudyPage = () => {
                             </label>
                           </div>
                         </div>
+                          </>
+
+
+                        ):(
+                          <>
+                           <div className="flex items-center gap-2 mb-2">
+                        <h3 className="font-semibold text-slate-800">"{question.question}" means "{question.displayAnswer}" in Englsih.</h3>
+                        <span className={`text-xs px-2 py-1 rounded-full ${
+                          question.type === 'mcq' 
+                            ? 'bg-cyan-100 text-cyan-700' 
+                            : 'bg-purple-100 text-purple-700'
+                        }`}>
+                          {question.type === 'mcq' ? 'MCQ' : 'T/F'}
+                        </span>
+                      </div>
+                        <div>
+                          {/* <p className="text-slate-600 mb-3 italic">"{question.displayAnswer}"</p> */}
+                          <div className="flex gap-3 mt-5">
+                            <label
+                              className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                                userAnswers[qIndex] === true
+                                  ? 'border-green-500 bg-green-50'
+                                  : 'border-slate-200 hover:border-slate-300'
+                              }`}
+                            >
+                              <input
+                                type="radio"
+                                name={`question-${qIndex}`}
+                                value="true"
+                                checked={userAnswers[qIndex] === true}
+                                onChange={() => handleTestAnswer(qIndex, true)}
+                                className="w-4 h-4 text-green-600"
+                              />
+                              <span className="font-medium text-green-700">True</span>
+                            </label>
+                            <label
+                              className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                                userAnswers[qIndex] === false
+                                  ? 'border-red-500 bg-red-50'
+                                  : 'border-slate-200 hover:border-slate-300'
+                              }`}
+                            >
+                              <input
+                                type="radio"
+                                name={`question-${qIndex}`}
+                                value="false"
+                                checked={userAnswers[qIndex] === false}
+                                onChange={() => handleTestAnswer(qIndex, false)}
+                                className="w-4 h-4 text-red-600"
+                              />
+                              <span className="font-medium text-red-700">False</span>
+                            </label>
+                          </div>
+                        </div>
+                          
+                          </>
+
+                        )}
+                       
                         </>
                       )}
                     </div>
