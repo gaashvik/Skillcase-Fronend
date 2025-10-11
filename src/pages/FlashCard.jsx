@@ -247,7 +247,7 @@ const FlashcardStudyPage = () => {
         const isTrue = Math.random() > 0.5;
         const wrongCardIndex = (numMCQs + i + 1) % shuffled.length;
 
-        if (i%2 == 0){
+        if (i%2 === 0){
         const displayAnswer = isTrue ? card.back_content : shuffled[wrongCardIndex].back_content;
         console.log(displayAnswer);
         questions.push({
