@@ -463,8 +463,9 @@ const FlashcardStudyPage = () => {
       newCompleted.add(currentCard + 1);
       setCompletedTests(newCompleted);
     }
-    
+    if (passed){
     setTestSubmitted(true);
+    }
   };
 
   const continueAfterTest = () => {
@@ -900,7 +901,7 @@ const FlashcardStudyPage = () => {
                   </button>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className="flex items-center justify-center space-y-3">
                   <button
                     onClick={() => {
                       setTestSubmitted(false);
