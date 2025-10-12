@@ -999,7 +999,7 @@ const FlashcardStudyPage = () => {
           <div className="relative w-full h-3 bg-slate-100 rounded-full overflow-visible">
             <div
               className="h-full bg-gradient-to-r from-slate-700 to-slate-800 rounded-full transition-all duration-300"
-              style={{ width: `${progress}%` }}
+              style={{ width: `${Progress}%` }}
             ></div>
             
             {testBreakpoints.map((breakpoint) => {
