@@ -20,6 +20,7 @@ const FlashcardStudyPage = () => {
   const [isFinalTest, setIsFinalTest] = useState(false);
   const [showTestPrompt, setShowTestPrompt] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [Progress,setProgress] = useState(0);
   
   // Swipe animation states
   const [swipeDirection, setSwipeDirection] = useState(null);
@@ -83,7 +84,8 @@ const FlashcardStudyPage = () => {
     if (test_status){
     setCompletedFinalTest(test_status);
     }
-    console.log(completedFinalTest);
+       const progress = ((currentCard + 1) / totalCards) * 100;
+       setProgress(progress);
   },[]);
 
   useEffect(() => {
@@ -107,7 +109,6 @@ const FlashcardStudyPage = () => {
 
 
   const totalCards = flashcardSet.length;
-  const progress = ((currentCard + 1) / totalCards) * 100;
 
   const getTestBreakpoints = () => {
     const breakpoints = [];
