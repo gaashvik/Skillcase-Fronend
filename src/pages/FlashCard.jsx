@@ -84,8 +84,7 @@ const FlashcardStudyPage = () => {
     if (test_status){
     setCompletedFinalTest(test_status);
     }
-       const progress = ((currentCard + 1) / totalCards) * 100;
-       setProgress(progress);
+    console.log(completedFinalTest);
   },[]);
 
   useEffect(() => {
@@ -100,6 +99,10 @@ const FlashcardStudyPage = () => {
       navigate('/login')
     }
   },[])
+  useEffect(()=>{
+    const progress = ((currentCard + 1) / totalCards) * 100;
+    setProgress(progress);
+  },[currentCard]);
 
 
   const handleTestClick=() =>{
@@ -109,6 +112,7 @@ const FlashcardStudyPage = () => {
 
 
   const totalCards = flashcardSet.length;
+  
 
   const getTestBreakpoints = () => {
     const breakpoints = [];
