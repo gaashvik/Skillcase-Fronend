@@ -124,7 +124,7 @@ export default function TwoColumnSection() {
               <div 
                 key={chapter.set_id}
                 onClick={() => {
-                  navigate(`/practice/${prof_level}/${chapter.set_id}?set_name=${encodeURIComponent(chapter.set_name)}`);
+                  navigate(`/practice/${prof_level}/${chapter.set_id}?set_name=${encodeURIComponent(chapter.set_name)}&test_status=${chapter.test_status}`);
                 }}
                 className={`bg-gradient-to-br ${getDifficultyStyles(color).sectionBg} rounded-xl p-3 cursor-pointer transition-all active:scale-95 shadow-md border border-gray-700/50 flex flex-col justify-between min-h-[100px] hover:opacity-90`}
               >
