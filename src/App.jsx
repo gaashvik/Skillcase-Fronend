@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ChapterSelect from './pages/ChapterSelect';
 import FlashcardStudyPage from './pages/FlashCard';
 import LoginSignupPage from './pages/LoginSignupPage';
+import DeleteFlashSet from './pages/deleteFlashSetPage';
 import api from "./api/axios"
 import { setUser, logout } from './redux/auth/authSlice';
 
@@ -40,8 +41,10 @@ export default function App() {
 
       <Route path='/' element={<LandingPage />}/>
       <Route path='/admin/addFlashSet' element={<AddFlashSet />} />
+      <Route path='/admin/deleteFlashSet' element={<DeleteFlashSet />} />
       <Route path='/practice/:prof_level' element={<ChapterSelect/>}/>
       <Route path='/practice/:prof_level/:set_id' element={<FlashcardStudyPage/>}/>
+
       <Route path='/Login' element={<LoginSignupPage/>}/>
     </Routes>
 

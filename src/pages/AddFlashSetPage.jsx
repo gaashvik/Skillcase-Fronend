@@ -40,13 +40,24 @@ export default function AddFlashSet() {
       return;
     }
 
-    setUploadStatus('Uploading...');
+    setUploadStatus('checking...');
 
     try {
       const formData = new FormData();
       formData.append('file', selectedFile);
       formData.append('set_name', chapterName);
       formData.append('proficiency_level', proficiency);
+
+      const res = await api.post("/admin/check",{"set_name":chapterName,"proficiency_level":proficiency});
+
+      if (res.data.status === true) {
+        setUploadStatus('The chapter already exists please delete it in order to insert new set');
+        return;
+      }
+      else {
+        setUploadStatus('Uploading....');
+      }
+
 
       await api.post("/admin/addFlashCardSet", formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -64,7 +75,6 @@ export default function AddFlashSet() {
       setUploadStatus('Upload failed. Please try again.');
     }
   };
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white w-screen">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
