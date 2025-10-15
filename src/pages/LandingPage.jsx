@@ -129,23 +129,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-        <div className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-3xl p-8 lg:p-16 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Ready to Start Your Learning Journey?
-          </h2>
-          <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">
-            Join thousands of successful learners who have transformed their careers with our platform
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to='/login'>
-            <button className="bg-amber-500 text-white px-8 py-4 rounded-lg hover:bg-amber-600 transition font-semibold">
-              Get Started Free
-            </button>
-            </Link>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
