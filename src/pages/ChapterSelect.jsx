@@ -73,14 +73,6 @@ export default function TwoColumnSection() {
       </div>
     </div>
   </div>
-  <div className="flex gap-3 pt-4">
-    <button className="flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg">
-      <Play className="w-5 h-5" /> Practice
-    </button>
-    <button className="flex items-center gap-2 border border-slate-400 px-4 py-2 rounded-lg hover:bg-slate-800">
-      <Bookmark className="w-5 h-5" />
-    </button>
-  </div>
 </div>
 
       {/* Right column - Desktop: List view, Mobile: Grid view */}
