@@ -72,7 +72,7 @@ export default function LandingPage() {
                 </Link>
 
                 <Link
-                  to="/test"
+                  to={user?.user_prof_level ? (`/test/${user?.user_prof_level}`):('test/test')}
                   className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
                 >
                   <FileText className="w-16 h-16 text-white mb-4 group-hover:scale-110 transition-transform" />
@@ -83,7 +83,7 @@ export default function LandingPage() {
                 </Link>
 
                 <Link
-                  to="/interview"
+                  to={user?.user_prof_level ? (`/interview/${user?.user_prof_level}`):('interview/test')}
                   className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
                 >
                   <Video className="w-16 h-16 text-white mb-4 group-hover:scale-110 transition-transform" />

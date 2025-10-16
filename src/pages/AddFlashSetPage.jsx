@@ -76,7 +76,7 @@ export default function AddFlashSet() {
     }
   };
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white w-screen">
+    // <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white w-screen">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-white rounded-2xl shadow-lg p-8">
           <div className="mb-8">
@@ -173,26 +173,9 @@ export default function AddFlashSet() {
           </div>
 
           {/* Recent Uploads */}
-          <div className="mt-12 pt-8 border-t border-slate-200">
-            <h2 className="text-xl font-bold text-slate-900 mb-4">Recent Uploads</h2>
-            <div className="space-y-3">
-              {[
-                { chapter: 'Introduction to React', language: 'English', difficulty: 'Medium', date: '2 hours ago' },
-                { chapter: 'Advanced JavaScript', language: 'English', difficulty: 'Hard', date: '1 day ago' },
-                { chapter: 'Python Basics', language: 'Spanish', difficulty: 'Easy', date: '2 days ago' },
-              ].map((item, idx) => (
-                <div key={idx} className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
-                  <div>
-                    <p className="font-semibold text-slate-900">{item.chapter}</p>
-                    <p className="text-sm text-slate-600">{item.language} • {item.difficulty}</p>
-                  </div>
-                  <span className="text-sm text-slate-500">{item.date}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+          
         </div>
       </div>
-    </div>
+    // </div>
   );
 }

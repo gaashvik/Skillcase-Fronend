@@ -15,7 +15,9 @@ import DeleteFlashSet from './pages/deleteFlashSetPage';
 import AddInterviewPage from './pages/addInterviewPage';
 import AddTestPage from './pages/addTestPage';
 import api from "./api/axios"
+import InterviewSelect from './pages/interviewSelect';
 import { setUser, logout } from './redux/auth/authSlice';
+import AdminDashboard from './pages/admin';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -48,9 +50,10 @@ export default function App() {
       <Route path ='/admin/addInterview' element = {<AddInterviewPage/>}/>
       <Route path='/admin/deleteFlashSet' element={<DeleteFlashSet />} />
       <Route path ='/test/:prof_level' element = {<TestSelect/>}/>
+       <Route path ='/interview/:prof_level' element = {<InterviewSelect/>}/>
       <Route path='/practice/:prof_level' element={<ChapterSelect/>}/>
       <Route path='/practice/:prof_level/:set_id' element={<FlashcardStudyPage/>}/>
-
+      <Route path='/admin' element ={<AdminDashboard/>}/>
       <Route path='/Login' element={<LoginSignupPage/>}/>
     </Routes>
 

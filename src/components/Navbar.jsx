@@ -1,12 +1,11 @@
 import React from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/auth/authSlice";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-  const [adminMenuOpen, setAdminMenuOpen] = React.useState(false);
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,18 +19,6 @@ export default function Navbar() {
     dispatch(logout());
     navigate("/");
   };
-
-  // Close admin dropdown when clicking outside
-  const adminMenuRef = React.useRef();
-  React.useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (adminMenuRef.current && !adminMenuRef.current.contains(e.target)) {
-        setAdminMenuOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
@@ -66,34 +53,12 @@ export default function Navbar() {
             {isAuthenticated ? (
               <>
                 {user?.role === "admin" && (
-                  <div className="relative" ref={adminMenuRef}>
-                    <button
-                      onClick={() => setAdminMenuOpen(!adminMenuOpen)}
-                      className="bg-cyan-500 text-white px-6 py-2 rounded-lg hover:bg-cyan-600 transition font-semibold flex items-center space-x-2"
-                    >
-                      <span>Admin Tools</span>
-                      <ChevronDown className="w-4 h-4" />
-                    </button>
-
-                    {adminMenuOpen && (
-                      <div className="absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-lg shadow-lg py-2">
-                        <Link
-                          to="/admin/addFlashSet"
-                          className="block px-4 py-2 text-slate-700 hover:bg-slate-100"
-                          onClick={() => setAdminMenuOpen(false)}
-                        >
-                          ➕ Add Flash Set
-                        </Link>
-                        <Link
-                          to="/admin/deleteFlashSet"
-                          className="block px-4 py-2 text-slate-700 hover:bg-slate-100"
-                          onClick={() => setAdminMenuOpen(false)}
-                        >
-                          🗑️ Delete Flash Set
-                        </Link>
-                      </div>
-                    )}
-                  </div>
+                  <Link
+                    to="/admin"
+                    className="bg-cyan-500 text-white px-6 py-2 rounded-lg hover:bg-cyan-600 transition font-semibold"
+                  >
+                    Admin Tools
+                  </Link>
                 )}
 
                 <button
@@ -138,13 +103,13 @@ export default function Navbar() {
               Practice
             </Link>
             <Link
-              to="/test"
+              to={user?.user_prof_level ? `/test/${user.user_prof_level}` : "/test/test"}
               className="block text-slate-600 hover:text-slate-900 font-medium"
             >
               Test
             </Link>
             <Link
-              to="/interview"
+              to={user?.user_prof_level ? `/interview/${user.user_prof_level}` : "/interview/test"} 
               className="block text-slate-600 hover:text-slate-900 font-medium"
             >
               Interview
@@ -153,20 +118,12 @@ export default function Navbar() {
             {isAuthenticated ? (
               <>
                 {user?.role === "admin" && (
-                  <div className="space-y-2">
-                    <Link
-                      to="/admin/addFlashSet"
-                      className="block w-full bg-cyan-500 text-white px-6 py-2 rounded-lg text-center font-semibold hover:bg-cyan-600 transition"
-                    >
-                     Add Flash Set
-                    </Link>
-                    <Link
-                      to="/admin/deleteFlashSet"
-                      className="block w-full bg-red-500 text-white px-6 py-2 rounded-lg text-center font-semibold hover:bg-red-600 transition"
-                    >
-                    Delete Flash Set
-                    </Link>
-                  </div>
+                  <Link
+                    to="/admin"
+                    className="block w-full bg-cyan-500 text-white px-6 py-2 rounded-lg text-center font-semibold hover:bg-cyan-600 transition"
+                  >
+                    Admin Tools
+                  </Link>
                 )}
                 <button
                   onClick={handleLogout}

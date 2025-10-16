@@ -52,7 +52,7 @@ export default function AddTestPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white w-screen">
+    // <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white w-screen">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-white rounded-2xl shadow-lg p-8">
           <h1 className="text-3xl font-bold text-slate-900 mb-6">
@@ -177,6 +177,6 @@ export default function AddTestPage() {
           </div>
         </div>
       </div>
-    </div>
+    // </div>
   );
 }
