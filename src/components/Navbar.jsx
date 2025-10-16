@@ -51,13 +51,13 @@ export default function Navbar() {
               Practice
             </Link>
             <Link
-              to="/test"
+              to={user?.user_prof_level ? `/test/${user.user_prof_level}` : "/test/test"}
               className="text-slate-600 hover:text-slate-900 transition font-medium"
             >
               Test
             </Link>
             <Link
-              to="/interview"
+              to={user?.user_prof_level ? `/interview/${user.user_prof_level}` : "/interview/test"}
               className="text-slate-600 hover:text-slate-900 transition font-medium"
             >
               Interview
