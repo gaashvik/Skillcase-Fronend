@@ -8,9 +8,12 @@ import Footer from './components/Footer';
 import Practice from './pages/Practice';
 import { useDispatch, useSelector } from "react-redux";
 import ChapterSelect from './pages/ChapterSelect';
+import TestSelect from './pages/testSelect';
 import FlashcardStudyPage from './pages/FlashCard';
 import LoginSignupPage from './pages/LoginSignupPage';
 import DeleteFlashSet from './pages/deleteFlashSetPage';
+import AddInterviewPage from './pages/addInterviewPage';
+import AddTestPage from './pages/addTestPage';
 import api from "./api/axios"
 import { setUser, logout } from './redux/auth/authSlice';
 
@@ -41,7 +44,10 @@ export default function App() {
 
       <Route path='/' element={<LandingPage />}/>
       <Route path='/admin/addFlashSet' element={<AddFlashSet />} />
+      <Route path='/admin/addTest' element={<AddTestPage />} />
+      <Route path ='/admin/addInterview' element = {<AddInterviewPage/>}/>
       <Route path='/admin/deleteFlashSet' element={<DeleteFlashSet />} />
+      <Route path ='/test/:prof_level' element = {<TestSelect/>}/>
       <Route path='/practice/:prof_level' element={<ChapterSelect/>}/>
       <Route path='/practice/:prof_level/:set_id' element={<FlashcardStudyPage/>}/>
 

@@ -12,7 +12,6 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ✅ Close mobile menu on navigation
   React.useEffect(() => {
     setMobileMenuOpen(false);
   }, [location.pathname]);
@@ -159,13 +158,13 @@ export default function Navbar() {
                       to="/admin/addFlashSet"
                       className="block w-full bg-cyan-500 text-white px-6 py-2 rounded-lg text-center font-semibold hover:bg-cyan-600 transition"
                     >
-                      ➕ Add Flash Set
+                     Add Flash Set
                     </Link>
                     <Link
                       to="/admin/deleteFlashSet"
                       className="block w-full bg-red-500 text-white px-6 py-2 rounded-lg text-center font-semibold hover:bg-red-600 transition"
                     >
-                      🗑️ Delete Flash Set
+                    Delete Flash Set
                     </Link>
                   </div>
                 )}
