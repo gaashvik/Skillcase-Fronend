@@ -58,7 +58,7 @@ const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const handleSpeakFront = (e) => {
     e.stopPropagation();
     if (flashcardSet[currentCard]?.front_content) {
-      speakText(flashcardSet[currentCard].front_content, 'en-EN');
+      speakText(flashcardSet[currentCard].back_content, 'de-DE');
     }
   };
 
@@ -206,7 +206,7 @@ const [isOverlayOpen, setIsOverlayOpen] = useState(false);
             </button>
 
             <div className="text-2xl md:text-4xl font-bold text-slate-800 text-center mb-8">
-              {flashcardSet[currentCard]?.front_content}
+              {flashcardSet[currentCard]?.back_content}
             </div>
 
             <button
