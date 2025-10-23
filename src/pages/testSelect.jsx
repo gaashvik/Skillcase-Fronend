@@ -89,8 +89,8 @@ export default function TestSelect() {
 
   return (
     <section className="w-screen min-h-screen flex flex-col md:flex-row p-5 bg-blue-50">
-      {/* Left column */}
-      <div className="w-full md:w-1/3 flex flex-col gap-4 md:m-2 md:h-screen md:sticky md:top-0">
+      {/* Left column - Desktop only */}
+      <div className="hidden md:flex md:w-1/3 flex-col gap-4 md:m-2 md:h-screen md:sticky md:top-0">
         {/* Test Info Block */}
         <div className="bg-slate-900 text-white rounded-3xl p-10 space-y-6 md:flex-1 md:flex md:flex-col md:justify-center">
           <div className="text-5xl md:text-3xl font-bold">
@@ -102,16 +102,6 @@ export default function TestSelect() {
             <span className="whitespace-nowrap">
               Chapter Tests: {chapterTests.length}
             </span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Target className={`w-5 h-5 flex-shrink-0 ${styles.iconColor}`} />
-            <span className="whitespace-nowrap">Difficulty: {difficulty}</span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <BarChart3 className="w-5 h-5 text-purple-400 flex-shrink-0" />
-            <span className="whitespace-nowrap">Level: {prof_level}</span>
           </div>
         </div>
 
@@ -147,8 +137,22 @@ export default function TestSelect() {
         )}
       </div>
 
+      {/* Mobile header - Test Info Block */}
+      <div className="md:hidden bg-slate-900 text-white rounded-3xl p-8 space-y-4 mb-5">
+        <div className="text-4xl font-bold">
+          {prof_level.toUpperCase()} Tests
+        </div>
+
+        <div className="flex items-center gap-2">
+          <FileText className="w-5 h-5 text-blue-400 flex-shrink-0" />
+          <span className="whitespace-nowrap">
+            Chapter Tests: {chapterTests.length}
+          </span>
+        </div>
+      </div>
+
       {/* Right column - Chapter Tests */}
-      <div className="w-full md:w-2/3 mt-5 md:mt-2 max-h-screen overflow-y-auto hide-scrollbar">
+      <div className="w-full md:w-2/3 md:mt-2 max-h-screen overflow-y-auto hide-scrollbar">
         {/* Desktop List View */}
         <div className="hidden md:block space-y-4">
           {chapterTests.map((test) => {
@@ -204,6 +208,37 @@ export default function TestSelect() {
           })}
         </div>
       </div>
+
+      {/* Mobile Final Test Block - Appears at bottom */}
+      {finalTest && (
+        <div
+          className={`md:hidden bg-gradient-to-br ${styles.sectionBg} text-white rounded-3xl p-8 space-y-6 border border-gray-700/50 mt-5`}
+        >
+          <div className="flex items-center gap-3">
+            <div
+              className={`w-12 h-12 ${styles.iconBg} rounded-xl flex items-center justify-center flex-shrink-0`}
+            >
+              <Trophy className={`w-6 h-6 ${styles.iconColor}`} />
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold">{finalTest.test_name}</h3>
+            </div>
+          </div>
+
+          <div className="space-y-2 text-white/80 text-sm">
+            <p>Complete all chapter tests to unlock the final assessment</p>
+            <p>Test your overall knowledge of {prof_level} level</p>
+          </div>
+
+          <button
+            onClick={() => window.open(finalTest.test_link, "_blank")}
+            className={`w-full ${styles.buttonBg} text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg`}
+          >
+            <Play className="w-5 h-5" />
+            Start Final Test
+          </button>
+        </div>
+      )}
 
       {/* Overlay */}
       {isOverlayOpen && selectedTest && (
