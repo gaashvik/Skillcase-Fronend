@@ -163,7 +163,7 @@ const [isOverlayOpen, setIsOverlayOpen] = useState(false);
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-slate-50">
       <header className="bg-white shadow-sm border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <button onClick={() => navigate(`/practice/${prof_level}`)} className="text-slate-600 hover:text-slate-800 flex items-center gap-2">
+          <button onClick={() => navigate(`/pronounce/${prof_level}`)} className="text-slate-600 hover:text-slate-800 flex items-center gap-2">
             <ChevronLeft className="w-5 h-5" /> Back
           </button>
           <div className="text-center">
