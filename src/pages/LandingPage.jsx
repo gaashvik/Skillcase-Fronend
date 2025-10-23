@@ -1,5 +1,5 @@
 import React from "react";
-import { BookOpen, FileText, Video, ArrowRight } from "lucide-react";
+import { BookOpen, FileText, Video, ArrowRight, Mic } from "lucide-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -27,6 +27,13 @@ export default function LandingPage() {
       description: "Prepare for real interviews with AI-powered mock sessions that provide instant feedback and guidance.",
       color: "bg-amber-500",
       link: "#interview"
+    },
+    {
+      icon: <Mic className="w-12 h-12" />,
+      title: "Pronounce",
+      description: "Practice pronunciation with voice recording and get feedback on your speaking skills.",
+      color: "bg-purple-500",
+      link: "#pronounce"
     }
   ];
 
@@ -58,38 +65,49 @@ export default function LandingPage() {
 
           <div className="relative w-full">
             {user ? (
-              // Logged-in user view: Show action cards
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
+              // Logged-in user view: Show action cards in 2x2 grid
+              <div className="grid grid-cols-2 gap-4 w-full">
                 <Link
                   to={user?.user_prof_level ? (`/practice/${user?.user_prof_level}`):('practice/test')}
-                  className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
+                  className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
                 >
-                  <BookOpen className="w-16 h-16 text-white mb-4 group-hover:scale-110 transition-transform" />
+                  <BookOpen className="w-12 h-12 sm:w-16 sm:h-16 text-white mb-3 sm:mb-4 group-hover:scale-110 transition-transform" />
                   <div className="text-center text-white">
-                    <div className="text-xl font-bold mb-1">Flashcards</div>
-                    <div className="text-sm opacity-90">Practice</div>
+                    <div className="text-lg sm:text-xl font-bold mb-1">Flashcards</div>
+                    <div className="text-xs sm:text-sm opacity-90">Practice</div>
                   </div>
                 </Link>
 
                 <Link
                   to={user?.user_prof_level ? (`/test/${user?.user_prof_level}`):('test/test')}
-                  className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
+                  className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
                 >
-                  <FileText className="w-16 h-16 text-white mb-4 group-hover:scale-110 transition-transform" />
+                  <FileText className="w-12 h-12 sm:w-16 sm:h-16 text-white mb-3 sm:mb-4 group-hover:scale-110 transition-transform" />
                   <div className="text-center text-white">
-                    <div className="text-xl font-bold mb-1">Take Test</div>
-                    <div className="text-sm opacity-90">Assessments</div>
+                    <div className="text-lg sm:text-xl font-bold mb-1">Take Test</div>
+                    <div className="text-xs sm:text-sm opacity-90">Assessments</div>
                   </div>
                 </Link>
 
                 <Link
                   to={user?.user_prof_level ? (`/interview/${user?.user_prof_level}`):('interview/test')}
-                  className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
+                  className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
                 >
-                  <Video className="w-16 h-16 text-white mb-4 group-hover:scale-110 transition-transform" />
+                  <Video className="w-12 h-12 sm:w-16 sm:h-16 text-white mb-3 sm:mb-4 group-hover:scale-110 transition-transform" />
                   <div className="text-center text-white">
-                    <div className="text-xl font-bold mb-1">Mock Interview</div>
-                    <div className="text-sm opacity-90">AI Practice</div>
+                    <div className="text-lg sm:text-xl font-bold mb-1">Mock Interview</div>
+                    <div className="text-xs sm:text-sm opacity-90">AI Practice</div>
+                  </div>
+                </Link>
+
+                <Link
+                  to={user?.user_prof_level ? (`/pronounce/${user?.user_prof_level}`):('pronounce/test')}
+                  className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
+                >
+                  <Mic className="w-12 h-12 sm:w-16 sm:h-16 text-white mb-3 sm:mb-4 group-hover:scale-110 transition-transform" />
+                  <div className="text-center text-white">
+                    <div className="text-lg sm:text-xl font-bold mb-1">Pronounce</div>
+                    <div className="text-xs sm:text-sm opacity-90">Voice Practice</div>
                   </div>
                 </Link>
               </div>

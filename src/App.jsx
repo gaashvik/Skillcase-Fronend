@@ -18,6 +18,10 @@ import api from "./api/axios"
 import InterviewSelect from './pages/interviewSelect';
 import { setUser, logout } from './redux/auth/authSlice';
 import AdminDashboard from './pages/admin';
+import VoiceRecorder from './pages/test';
+import ProSelect from './pages/pronounceSelect';
+// import CardOverlayExample from './components/testOverlay';
+import Pronounce from './pages/pronounce';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -52,8 +56,11 @@ export default function App() {
       <Route path ='/test/:prof_level' element = {<TestSelect/>}/>
        <Route path ='/interview/:prof_level' element = {<InterviewSelect/>}/>
       <Route path='/practice/:prof_level' element={<ChapterSelect/>}/>
+      <Route path='/pronounce/:prof_level' element={<ProSelect/>}/>
       <Route path='/practice/:prof_level/:set_id' element={<FlashcardStudyPage/>}/>
       <Route path='/admin' element ={<AdminDashboard/>}/>
+      <Route path='/t' element ={<VoiceRecorder/>}/>
+      <Route path='/pronounce/:prof_level/:set_id' element ={<Pronounce/>}/>
       <Route path='/Login' element={<LoginSignupPage/>}/>
     </Routes>
 
