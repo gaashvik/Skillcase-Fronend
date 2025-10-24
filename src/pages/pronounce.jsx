@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ChevronLeft, ChevronRight, Shuffle, RotateCw, Volume2, Mic } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Shuffle, RotateCw, Volume2, Mic, CheckCircle2, XCircle } from 'lucide-react';
 import api from '../api/axios';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
