@@ -57,7 +57,7 @@ const FlashcardStudyPage = () => {
        if (flashcardSet[currentCard]?.back_content) {
         speakText(flashcardSet[currentCard].back_content, 'de-DE');
       }
-    },[currentCard])
+    },[currentCard,flashcardSet])
 
   const handleSpeakFront = (e) => {
     e.stopPropagation();
