@@ -245,25 +245,57 @@ const Pronounce = () => {
               </button>
 
               {/* Pronunciation Result Card */}
- {assesmentResult && (
-                <div className="mt-6 w-full bg-slate-100 rounded-xl p-4 text-sm text-slate-700 shadow-inner border border-slate-200">
-                  <p className="font-semibold text-slate-800 mb-2">Your Pronunciation Assessment:</p>
-                  <div className="grid grid-cols-2 gap-2 text-center">
-                    <div>
-                      <p className="text-xs text-slate-500">Overall Accuracy</p>
-                      <p className="text-lg font-bold text-blue-700">{assesmentResult.result.accuracyScore}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-slate-500">Fluency</p>
-                      <p className="text-lg font-bold text-blue-700">{assesmentResult.result.fluencyScore}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-slate-500">Completeness</p>
-                      <p className="text-lg font-bold text-blue-700">{assesmentResult.result.completenessScore}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-slate-500">Pronunciation Score</p>
-                      <p className="text-lg font-bold text-blue-700">{assesmentResult.result.pronunciationScore}</p>
+  {assesmentResult && (
+                <div className="mt-8 w-full max-w-md">
+                  {/* Pass/Fail Banner */}
+                  <div className={`rounded-t-xl px-6 py-3 flex items-center justify-center gap-2 ${
+                    assessmentStatus === 'pass' 
+                      ? 'bg-gradient-to-r from-green-500 to-emerald-500' 
+                      : 'bg-gradient-to-r from-red-500 to-rose-500'
+                  }`}>
+                    {assessmentStatus === 'pass' ? (
+                      <>
+                        <CheckCircle2 className="w-6 h-6 text-white" />
+                        <span className="text-white font-bold text-lg">Passed!</span>
+                      </>
+                    ) : (
+                      <>
+                        <XCircle className="w-6 h-6 text-white" />
+                        <span className="text-white font-bold text-lg">Keep Practicing</span>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Assessment Details */}
+                  <div className="bg-white rounded-b-xl shadow-xl border-2 border-slate-200 p-6">
+                    <p className="font-semibold text-slate-800 mb-4 text-center">Pronunciation Assessment</p>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg p-4 text-center border border-blue-100">
+                        <p className="text-xs text-slate-600 font-medium mb-1">Overall Accuracy</p>
+                        <p className={`text-2xl font-bold ${
+                          assesmentResult.result.accuracyScore >= 70 ? 'text-green-600' : 'text-red-600'
+                        }`}>
+                          {assesmentResult.result.accuracyScore}%
+                        </p>
+                      </div>
+                      <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg p-4 text-center border border-blue-100">
+                        <p className="text-xs text-slate-600 font-medium mb-1">Fluency</p>
+                        <p className="text-2xl font-bold text-blue-700">
+                          {assesmentResult.result.fluencyScore}%
+                        </p>
+                      </div>
+                      <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg p-4 text-center border border-blue-100">
+                        <p className="text-xs text-slate-600 font-medium mb-1">Completeness</p>
+                        <p className="text-2xl font-bold text-blue-700">
+                          {assesmentResult.result.completenessScore}%
+                        </p>
+                      </div>
+                      <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg p-4 text-center border border-blue-100">
+                        <p className="text-xs text-slate-600 font-medium mb-1">Pronunciation</p>
+                        <p className="text-2xl font-bold text-blue-700">
+                          {assesmentResult.result.pronunciationScore}%
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
