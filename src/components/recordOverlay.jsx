@@ -133,7 +133,7 @@ export default function VoiceRecorder({ card, closeOverlay,setAssesmentResult })
 
     const formData = new FormData();
     formData.append("audio", audioBlob, "recording.wav");
-    formData.append("reference_text", card.front_content);
+    formData.append("reference_text", card.back_content);
 
     try {
       const response = await api.post("/pronounce/asses", formData, {
