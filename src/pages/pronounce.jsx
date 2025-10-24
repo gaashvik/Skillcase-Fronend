@@ -245,7 +245,7 @@ const Pronounce = () => {
               </button>
 
               {/* Pronunciation Result Card */}
-              {assesmentResult && (
+ {assesmentResult && (
                 <div className="mt-6 w-full bg-slate-100 rounded-xl p-4 text-sm text-slate-700 shadow-inner border border-slate-200">
                   <p className="font-semibold text-slate-800 mb-2">Your Pronunciation Assessment:</p>
                   <div className="grid grid-cols-2 gap-2 text-center">
