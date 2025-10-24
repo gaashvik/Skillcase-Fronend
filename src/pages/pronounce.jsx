@@ -211,7 +211,7 @@ const Pronounce = () => {
 
           {/* Flashcard */}
           <div
-            className="relative w-full h-[400px] md:h-[500px] cursor-pointer"
+            className="relative w-full h-[600px] md:h-[500px] cursor-pointer"
             onMouseDown={handleDragStart}
             onMouseMove={handleDragMove}
             onMouseUp={handleDragEnd}
@@ -238,8 +238,13 @@ const Pronounce = () => {
               </button>
 
               {/* Card content */}
-              <div className="text-2xl md:text-4xl font-bold text-slate-800 text-center mb-8">
-                {flashcardSet[currentCard]?.back_content}
+              <div className="text-center mb-6 md:mb-8 px-4">
+                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-800 mb-3 md:mb-4 break-words">
+                  {flashcardSet[currentCard]?.back_content}
+                </div>
+                <div className="text-lg sm:text-xl md:text-2xl text-slate-500 font-medium break-words">
+                  {flashcardSet[currentCard]?.front_content}
+                </div>
               </div>
 
               {/* Voice Recorder Button */}
