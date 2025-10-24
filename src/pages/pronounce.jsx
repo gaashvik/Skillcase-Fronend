@@ -71,7 +71,7 @@ const Pronounce = () => {
      if (flashcardSet[currentCard]?.back_content) {
       speakText(flashcardSet[currentCard].back_content, 'de-DE');
     }
-  },[currentCard])
+  },[currentCard,flashcardSet])
 
   // Load flashcards
   useEffect(() => {
