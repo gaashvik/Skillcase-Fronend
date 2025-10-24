@@ -69,7 +69,7 @@ const Pronounce = () => {
   };
   useEffect(()=>{
      if (flashcardSet[currentCard]?.back_content) {
-      speakText(flashcardSet[currentCard].front_content, 'de-DE');
+      speakText(flashcardSet[currentCard].back_content, 'de-DE');
     }
   },[currentCard,flashcardSet])
 
