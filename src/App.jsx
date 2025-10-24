@@ -22,6 +22,9 @@ import VoiceRecorder from './pages/test';
 import ProSelect from './pages/pronounceSelect';
 // import CardOverlayExample from './components/testOverlay';
 import Pronounce from './pages/pronounce';
+if (typeof global === 'undefined') {
+  window.global = window;
+}
 
 export default function App() {
   const dispatch = useDispatch();

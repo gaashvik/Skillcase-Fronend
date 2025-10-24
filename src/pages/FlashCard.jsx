@@ -53,6 +53,11 @@ const FlashcardStudyPage = () => {
       alert('Text-to-speech is not supported in your browser.');
     }
   };
+    useEffect(()=>{
+       if (flashcardSet[currentCard]?.back_content) {
+        speakText(flashcardSet[currentCard].back_content, 'de-DE');
+      }
+    },[currentCard])
 
   const handleSpeakFront = (e) => {
     e.stopPropagation();
