@@ -170,6 +170,13 @@ const Pronounce = () => {
     setFlashcardSet(shuffled);
     setCurrentCard(0);
   };
+    const getAssessmentStatus = () => {
+    if (!assesmentResult) return null;
+    const accuracy = assesmentResult.result.accuracyScore;
+    return accuracy >= 70 ? 'pass' : 'fail';
+  };
+
+  const assessmentStatus = getAssessmentStatus();
 
   const handleReset = () => setCurrentCard(0);
 
