@@ -100,7 +100,7 @@ const FlashcardStudyPage = () => {
           setFlashcardSet(orderedFlashcards);
           setOrder(orderMap);
           setCurrentCard(userState[0].current_index || 0);
-          setCompletedFinalTest(userState[0].test_status || true);
+          setCompletedFinalTest(userState[0].test_status || false);
         }
 
         }
