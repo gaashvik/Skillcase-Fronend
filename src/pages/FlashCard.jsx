@@ -21,6 +21,7 @@ const FlashcardStudyPage = () => {
   const [showTestPrompt, setShowTestPrompt] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [Progress,setProgress] = useState(0);
+  const[order,setOrder] = useState(null)
   
   // Swipe animation states
   const [swipeDirection, setSwipeDirection] = useState(null);
@@ -29,9 +30,10 @@ const FlashcardStudyPage = () => {
   const [isDragging, setIsDragging] = useState(false);
   
   const { prof_level, set_id } = useParams();
+  // const [SetId,setSetID] = useState(set_id)
   const [searchParams] = useSearchParams();
   const set_name = searchParams.get("set_name");
-  const test_status = searchParams.get("test_status");
+  // const test_status = searchParams.get("test_status");
   const navigate = useNavigate();
 
   // Speech synthesis function
@@ -73,24 +75,71 @@ const FlashcardStudyPage = () => {
     }
   };
 
-  useEffect(() => {
-    const getCards = async () => {
-      try {
-        const res = await api.get(`practice/getFlashCards/${set_id}`);
-        console.log(res.data);
-        setFlashcardSet(res.data);
-      } catch (err) {
+  useEffect(()=>{
+    const getCards = async () =>{
+      try{
+        const cardsRes = await api.get(`practice/getFlashCards/${set_id}`);
+        const flashcards = cardsRes.data;
+
+        const stateRes = await api.get(`practice/getFS/${set_id}`);
+        const userState = stateRes.data;
+
+        if (!userState || userState.useDefault){
+          const defaultMap = new Map(
+          flashcards.map((item, idx) => [idx, item.card_id])
+        );  
+        setOrder(defaultMap);
+        setFlashcardSet(flashcards)
+        }
+        else{
+          console.log(userState[0].current_order);
+          const orderMap = new Map(userState[0].current_order);
+          console.log(orderMap);
+          const lookup = new Map(flashcards.map(c => [c.card_id, c]));
+          const orderedFlashcards = Array.from(orderMap.values()).map(id => lookup.get(id));
+          setFlashcardSet(orderedFlashcards);
+          setOrder(orderMap);
+          setCurrentCard(userState[0].current_index || 0);
+          setCompletedFinalTest(userState[0].test_status || true);
+        }
+
+        }
+        catch(err){
+          console.log(err);
+        }
+
+      }
+      getCards();
+    },[set_id])
+
+    useEffect(()=>{
+      try{
+      console.log(order);
+      const lookup = new Map(flashcardSet.map(c => [c.card_id, c]));
+      const orderedFlashcards = Array.from(order.values()).map(id => lookup.get(id));
+      setFlashcardSet(orderedFlashcards);
+      const saveSate = async()=>{
+        try{
+         const res = await api.post('/practice/saveFS',{
+            "user_id" : user.user_id,
+            "set_id" : set_id,
+            "status" : completedFinalTest,
+            "order":JSON.stringify(Array.from(order.entries())),
+            "current_index":currentCard
+          })
+        }
+        catch (err){
+          console.log(err);
+        }
+      }
+      saveSate();
+      
+      }
+      catch(err){
         console.log(err);
       }
-    }
-    getCards();
-  }, []);
-  useEffect(()=>{
-    if (test_status){
-    setCompletedFinalTest(test_status);
-    }
-    console.log(completedFinalTest);
-  },[]);
+
+    },[currentCard])
 
   useEffect(() => {
     return () => {
@@ -441,10 +490,13 @@ const FlashcardStudyPage = () => {
     }
     console.log(shuffle);
     setFlashcardSet(shuffle);
-    setCurrentCard(0);
     setIsFlipped(false);
     setShowTestPrompt(false);
     setCompletedTests(new Set());
+    shuffle.forEach((item,idx)=>{
+      order.set(idx,item.card_id)
+    })
+    setCurrentCard(0);
   };
 
   const handleReset = () => {
@@ -483,10 +535,12 @@ const FlashcardStudyPage = () => {
     if (isFinalTest && passed){
       const saveState = async () => {
         try {
-          const res = await api.post('/practice/saveFS',{
+           const res = await api.post('/practice/saveFS',{
             "user_id" : user.user_id,
             "set_id" : set_id,
-            "status" : passed
+            "status" : passed,
+            "order":JSON.stringify(Array.from(order.entries())),
+            "current_index":currentCard
           })
       }
       catch (err){
@@ -1042,8 +1096,8 @@ const FlashcardStudyPage = () => {
               className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
               style={{ left: '100%' }}
             >
-              <div className={`w-7 h-7 rounded-full  ${completedFinalTest === "true" ? ("bg-green-500 "):("bg-amber-500 ")}  flex items-center justify-center`} onClick={handleTestClick}>
-                {completedFinalTest === "true" ? (<Check className="w-3 h-3 text-white" />):(<Target className="w-4 h-4 text-white"/>)}
+              <div className={`w-7 h-7 rounded-full  ${completedFinalTest === true ? ("bg-green-500 "):("bg-amber-500 ")}  flex items-center justify-center`} onClick={handleTestClick}>
+                {completedFinalTest === true ? (<Check className="w-3 h-3 text-white" />):(<Target className="w-4 h-4 text-white"/>)}
               </div>
               {/* <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2 whitespace-nowrap">
                 <span className="text-xs text-amber-600 font-bold">Final</span>
