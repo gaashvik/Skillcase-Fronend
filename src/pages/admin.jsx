@@ -12,6 +12,8 @@ import AddFlashcards from "./AddFlashSetPage";
 import DeleteFlashcards from "./deleteFlashSetPage";
 import AddTest from "./addTestPage";
 import AddInterview from "./addInterviewPage";
+import AddPronounceSet from "./AddPronounceSetPage";
+import DeletePronounceSet from "./DeletePronounceSetPage";
 
 const AdminDashboard = () => {
   const [activePage, setActivePage] = useState("flashcards-add");
@@ -22,6 +24,10 @@ const AdminDashboard = () => {
         return <AddFlashcards />;
       case "flashcards-delete":
         return <DeleteFlashcards />;
+      case "pronounce-add":
+        return <AddPronounceSet />;
+      case "pronounce-delete":
+        return <DeletePronounceSet />;
       case "test":
         return <AddTest />;
       case "interview":
@@ -36,6 +42,8 @@ const AdminDashboard = () => {
     { id: "flashcards-delete", label: "Delete Flashcards", icon: <Trash2 /> },
     { id: "test", label: "Add Test", icon: <ClipboardList /> },
     { id: "interview", label: "Add Interview", icon: <Users /> },
+    {id:"pronounce-add", label:"Add Pronunciation Set", icon: <FilePlus2 />},
+    { id: "pronounce-delete", label: "Delete Pronunciation Set", icon: <Trash2 /> },
   ];
 
   return (

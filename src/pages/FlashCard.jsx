@@ -346,7 +346,7 @@ const FlashcardStudyPage = () => {
   };
 
   const handleCardFlip = (e) => {
-    // Don't flip if dragging or if clicking speaker button
+    
     if (!isDragging && Math.abs(dragOffset) < 10) {
       setIsFlipped(!isFlipped);
     }

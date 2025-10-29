@@ -17,12 +17,10 @@ export default function ProSelect() {
   useEffect(() => {
     const getCards = async () => {
         try{
-          const res = await api.get(`/practice/allFlashSet/${prof_level}`);
+          const res = await api.get(`/pronounce/allPronounceSet/${prof_level}`);
           setChapters(res.data);
           const chapter_num = res.data.length;
           const completed_chap_num = res.data.filter(ch => ch.test_status).length;
-          console.log(chapter_num);
-          console.log(completed_chap_num);
           const prog = (completed_chap_num/chapter_num)*100;
           console.log(prog);
           setProgress(prog);
@@ -83,9 +81,9 @@ export default function ProSelect() {
             const color = 'amber';
             return (
               <div 
-                key={chapter.set_id}
+                key={chapter.pronounce_id}
                 onClick={() => {
-                  navigate(`/pronounce/${prof_level}/${chapter.set_id}?set_name=${encodeURIComponent(chapter.set_name)}`);
+                  navigate(`/pronounce/${prof_level}/${chapter.pronounce_id}?pronounce_name=${encodeURIComponent(chapter.pronounce_name)}`);
                 }}
                 className={`flex items-center justify-between p-4 rounded-lg cursor-pointer bg-gradient-to-r ${getDifficultyStyles(color).sectionBg} hover:opacity-90 transition-all border border-gray-700/50`}
               >
@@ -95,7 +93,7 @@ export default function ProSelect() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <h3 className="text-lg md:text-xl font-semibold text-white truncate">
-                      {chapter.set_name.charAt(0).toUpperCase() + chapter.set_name.slice(1)}
+                      {chapter.pronounce_name.charAt(0).toUpperCase() + chapter.pronounce_name.slice(1)}
                     </h3>
                     <p className="text-sm text-white/60 mt-0.5">
                       {chapter.number_of_cards || 0} cards
@@ -114,9 +112,9 @@ export default function ProSelect() {
             const color = 'amber';
             return (
               <div 
-                key={chapter.set_id}
+                key={chapter.pronounce_id}
                 onClick={() => {
-                  navigate(`/pronounce/${prof_level}/${chapter.set_id}?set_name=${encodeURIComponent(chapter.set_name)}`);
+                  navigate(`/pronounce/${prof_level}/${chapter.pronounce_id}?pronounce_name=${encodeURIComponent(chapter.pronounce_name)}`);
                 }}
                 className={`bg-gradient-to-br ${getDifficultyStyles(color).sectionBg} rounded-xl p-3 cursor-pointer transition-all active:scale-95 shadow-md border border-gray-700/50 flex flex-col justify-between min-h-[100px] hover:opacity-90`}
               >
@@ -125,7 +123,7 @@ export default function ProSelect() {
                     {!chapter.test_status ? (<Award className={`w-5 h-5 ${getDifficultyStyles(color).iconColor}`} />):(<Check className="text-green-500 w-5 h-5" />)}
                   </div>
                   <h3 className="text-xs font-semibold text-white leading-tight mb-1 flex-grow line-clamp-2">
-                    {chapter.set_name.charAt(0).toUpperCase() + chapter.set_name.slice(1)}
+                    {chapter.pronounce_name.charAt(0).toUpperCase() + chapter.pronounce_name.slice(1)}
                   </h3>
                   <div className="mt-auto pt-1">
                     <span className="text-[10px] text-white/60 font-medium">
