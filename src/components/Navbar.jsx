@@ -76,7 +76,7 @@ export default function Navbar() {
             ) : (
               <Link
                 to="/login"
-                className="bg-amber-500 text-white px-6 py-2 rounded-lg hover:bg-amber-600 transition font-semibold"
+                className="bg-[#F9C235] text-white px-6 py-2 rounded-lg hover:bg-amber-600 transition font-semibold"
               >
                 Get Started
               </Link>

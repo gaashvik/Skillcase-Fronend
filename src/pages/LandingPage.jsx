@@ -55,7 +55,7 @@ export default function LandingPage() {
             
             {!user?.user_id &&<Link
               to="/login"
-              className="bg-amber-500 text-white px-8 py-4 rounded-lg hover:bg-amber-600 transition flex items-center space-x-2 text-lg font-semibold group inline-flex"
+              className="bg-[#F9C235] text-white px-8 py-4 rounded-lg hover:bg-amber-600 transition flex items-center space-x-2 text-lg font-semibold group inline-flex"
             >
               <span>Start Learning</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition" />
@@ -68,7 +68,7 @@ export default function LandingPage() {
               <div className="grid grid-cols-2 gap-4 w-full">
                 <Link
                   to={user?.user_prof_level ? (`/practice/${user?.user_prof_level}`):('practice/test')}
-                  className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
+                  className="bg-[#FFD54F] rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
                 >
                   <BookOpen className="w-12 h-12 sm:w-16 sm:h-16 text-white mb-3 sm:mb-4 group-hover:scale-110 transition-transform" />
                   <div className="text-center text-white">
@@ -79,7 +79,7 @@ export default function LandingPage() {
 
                 <Link
                   to={user?.user_prof_level ? (`/test/${user?.user_prof_level}`):('test/test')}
-                  className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
+                  className="bg-[#1976D2] rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
                 >
                   <FileText className="w-12 h-12 sm:w-16 sm:h-16 text-white mb-3 sm:mb-4 group-hover:scale-110 transition-transform" />
                   <div className="text-center text-white">
@@ -90,7 +90,7 @@ export default function LandingPage() {
 
                 <Link
                   to={user?.user_prof_level ? (`/interview/${user?.user_prof_level}`):('interview/test')}
-                  className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
+                  className="bg-[#81D4FA] to-amber-600 rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
                 >
                   <Video className="w-12 h-12 sm:w-16 sm:h-16 text-white mb-3 sm:mb-4 group-hover:scale-110 transition-transform" />
                   <div className="text-center text-white">
@@ -101,7 +101,7 @@ export default function LandingPage() {
 
                 <Link
                   to={user?.user_prof_level ? (`/pronounce/${user?.user_prof_level}`):('pronounce/test')}
-                  className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
+                  className="bg-[#37474F] rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
                 >
                   <Mic className="w-12 h-12 sm:w-16 sm:h-16 text-white mb-3 sm:mb-4 group-hover:scale-110 transition-transform" />
                   <div className="text-center text-white">
@@ -114,13 +114,13 @@ export default function LandingPage() {
               // Non-logged-in user view: Show stats grid
               <div className="grid grid-cols-2 gap-4 w-full">
                 <div className="space-y-4">
-                  <div className="bg-gradient-to-br from-amber-400 to-amber-500 rounded-2xl p-6 h-44 sm:h-48 flex items-center justify-center shadow-xl">
+                  <div className="bg-[#FFD54F] rounded-2xl p-6 h-44 sm:h-48 flex items-center justify-center shadow-xl">
                     <div className="text-center text-white">
                       <div className="text-3xl sm:text-4xl font-bold">50K+</div>
                       <div className="text-xs sm:text-sm mt-2 opacity-90">Active Learners</div>
                     </div>
                   </div>
-                  <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 h-56 sm:h-64 flex items-center justify-center shadow-xl">
+                  <div className="bg-[#1976D2] to-blue-600 rounded-2xl p-6 h-56 sm:h-64 flex items-center justify-center shadow-xl">
                     <div className="text-center text-white">
                       <div className="text-3xl sm:text-4xl font-bold">95%</div>
                       <div className="text-xs sm:text-sm mt-2 opacity-90">Success Rate</div>
@@ -128,13 +128,13 @@ export default function LandingPage() {
                   </div>
                 </div>
                 <div className="space-y-4 pt-8">
-                  <div className="bg-gradient-to-br from-emerald-400 to-emerald-500 rounded-2xl p-6 h-56 sm:h-64 flex items-center justify-center shadow-xl">
+                  <div className="bg-[#81D4FA] to-emerald-500 rounded-2xl p-6 h-56 sm:h-64 flex items-center justify-center shadow-xl">
                     <div className="text-center text-white">
                       <div className="text-3xl sm:text-4xl font-bold">1000+</div>
                       <div className="text-xs sm:text-sm mt-2 opacity-90">Practice Tests</div>
                     </div>
                   </div>
-                  <div className="bg-gradient-to-br from-slate-700 to-slate-900 rounded-2xl p-6 h-44 sm:h-48 flex items-center justify-center shadow-xl">
+                  <div className="bg-[#37474F] rounded-2xl p-6 h-44 sm:h-48 flex items-center justify-center shadow-xl">
                     <div className="text-center text-white">
                       <div className="text-3xl sm:text-4xl font-bold">24/7</div>
                       <div className="text-xs sm:text-sm mt-2 opacity-90">Support</div>
