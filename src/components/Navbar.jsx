@@ -25,10 +25,9 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="text-2xl font-bold text-slate-800">
-            SKILL<span className="text-amber-500">CASE</span>
-          </Link>
-
+      <Link to="/" className="text-2xl font-bold text-slate-800 flex items-center gap-2">
+  <img src="/mainlogo.png" alt="Logo" className="w-30 sm:w-30 md:w-30 lg:w-40 h-auto pt-1" />
+</Link>
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             <Link
@@ -61,7 +60,7 @@ export default function Navbar() {
                 {user?.role === "admin" && (
                   <Link
                     to="/admin"
-                    className="bg-cyan-500 text-white px-6 py-2 rounded-lg hover:bg-cyan-600 transition font-semibold"
+                    className="bg-[#153A71] text-white px-6 py-2 rounded-lg hover:bg-[#153A50] transition font-semibold"
                   >
                     Admin Tools
                   </Link>
@@ -69,7 +68,7 @@ export default function Navbar() {
 
                 <button
                   onClick={handleLogout}
-                  className="bg-amber-500 text-white px-6 py-2 rounded-lg hover:bg-amber-600 transition font-semibold"
+                  className="bg-[#F9C235] text-white px-6 py-2 rounded-lg hover:bg-amber-600 transition font-semibold"
                 >
                   Logout
                 </button>
@@ -132,14 +131,14 @@ export default function Navbar() {
                 {user?.role === "admin" && (
                   <Link
                     to="/admin"
-                    className="block w-full bg-cyan-500 text-white px-6 py-2 rounded-lg text-center font-semibold hover:bg-cyan-600 transition"
+                    className="block w-full bg-[#153A71] text-white px-6 py-2 rounded-lg text-center font-semibold hover:bg-[#153A50] transition"
                   >
                     Admin Tools
                   </Link>
                 )}
                 <button
                   onClick={handleLogout}
-                  className="w-full bg-amber-500 text-white px-6 py-2 rounded-lg text-center font-semibold hover:bg-amber-600 transition"
+                  className="w-full bg-[#F9C235] text-white px-6 py-2 rounded-lg text-center font-semibold hover:bg-amber-600 transition"
                 >
                   Logout
                 </button>
