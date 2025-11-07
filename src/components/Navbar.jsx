@@ -35,7 +35,13 @@ export default function Navbar() {
               to={user?.user_prof_level ? `/practice/${user.user_prof_level}` : "/practice/test"}
               className="text-slate-600 hover:text-slate-900 transition font-medium"
             >
-              Practice
+              Flashcard
+            </Link>
+            <Link
+              to={user?.user_prof_level ? `/pronounce/${user.user_prof_level}` : "/pronounce/test"}
+              className="text-slate-600 hover:text-slate-900 transition font-medium"
+            >
+              Pronounce
             </Link>
             <Link
               to={user?.user_prof_level ? `/test/${user.user_prof_level}` : "/test/test"}
@@ -100,7 +106,13 @@ export default function Navbar() {
               to={user?.user_prof_level ? `/practice/${user.user_prof_level}` : "/practice/test"}
               className="block text-slate-600 hover:text-slate-900 font-medium"
             >
-              Practice
+              Flashcard
+            </Link>
+            <Link
+              to={user?.user_prof_level ? `/pronounce/${user.user_prof_level}` : "/pronounce/test"}
+              className="block text-slate-600 hover:text-slate-900 font-medium"
+            >
+              Pronounce
             </Link>
             <Link
               to={user?.user_prof_level ? `/test/${user.user_prof_level}` : "/test/test"}

@@ -50,8 +50,7 @@ export default function LandingPage() {
             )
             }
             <p className="text-lg text-slate-600 leading-relaxed">
-              Discover personalized learning paths and get the expert support you need 
-              to excel in your career, from preparation to professional success.
+              Learn, practice, and improve with our four tools — Flashcards, Take Test, Interview, and Pronounce — everything you need to study better and grow faster.
             </p>
             
             {!user?.user_id &&<Link
