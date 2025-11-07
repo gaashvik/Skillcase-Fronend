@@ -56,10 +56,17 @@ const FlashcardStudyPage = () => {
     }
   };
     useEffect(()=>{
-       if (flashcardSet[currentCard]?.back_content) {
+      if (isFlipped){
+        if (flashcardSet[currentCard]?.back_content) {
+        speakText(flashcardSet[currentCard].back_content, 'de-DE');
+      }
+      }
+      else{
+       if (flashcardSet[currentCard]?.front_content) {
         speakText(flashcardSet[currentCard].front_content, 'de-DE');
       }
-    },[currentCard,flashcardSet])
+    }
+    },[currentCard,flashcardSet,isFlipped])
 
   const handleSpeakFront = (e) => {
     e.stopPropagation();

@@ -129,12 +129,6 @@ export default function InterviewSelect() {
                    <h3 className="text-lg md:text-xl font-semibold text-white truncate">
                       {test.difficulty.charAt(0).toUpperCase() + test.difficulty.slice(1)}
                     </h3>
-    
-                  <div className="mt-auto pt-1">
-                    <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold ${testStyles.badge}`}>
-                      Click to begin.
-                    </span>
-                  </div>
                 </div>
               </div>
             );

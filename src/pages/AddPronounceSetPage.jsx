@@ -131,21 +131,17 @@ export default function AddPronounceSet() {
             </div>
 
             {/* Chapter Name */}
-            {proficiency && prof_chapter_mp[proficiency] && (
+            {proficiency && (
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2">
                   Chapter Name
                 </label>
-                <select
+                <input
                   value={chapterName}
                   onChange={(e) => setChapterName(e.target.value)}
                   className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition"
                 >
-                  <option value="">Select a chapter</option>
-                  {prof_chapter_mp[proficiency].map((chapter) => (
-                    <option key={chapter} value={chapter}>{chapter}</option>
-                  ))}
-                </select>
+                </input>
               </div>
             )}
 
