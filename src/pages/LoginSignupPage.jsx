@@ -64,7 +64,7 @@ const LoginSignupPage = () => {
             <span className="text-slate-800">SKILL</span>
             <span className="text-amber-400">CASE</span>
           </h1>
-          <p className="text-slate-600 text-sm sm:text-base">Master Medical Terminology</p>
+          <p className="text-slate-600 text-sm sm:text-base">A platform where you can learn, practice, and grow.</p>
         </div>
 
         <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 md:p-10 border border-slate-100">

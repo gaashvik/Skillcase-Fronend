@@ -54,11 +54,12 @@ export default function LandingPage() {
             {user ? (<h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight ">
               Welcome, {user.username.slice(0,1).toUpperCase()+user.username.slice(1,user.username.length+1)}
             </h1>):(            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
-              Master Your Skills with Expert Guidance
+            To Skillcase — a platform where you can learn, practice, and grow.
             </h1>
             )
             }
             <p className="text-lg text-slate-600 leading-relaxed">
+              To Skillcase — a platform where you can learn, practice, and grow.
               Learn, practice, and improve with our four tools — Flashcards, Take Test, Interview, and Pronounce — everything you need to study better and grow faster.
             </p>
             
