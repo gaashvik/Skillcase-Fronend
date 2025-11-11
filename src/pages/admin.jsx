@@ -6,6 +6,7 @@ import {
   Trash2,
   ClipboardList,
   Users,
+  Delete,
 } from "lucide-react";
 
 import AddFlashcards from "./AddFlashSetPage";
@@ -14,6 +15,9 @@ import AddTest from "./addTestPage";
 import AddInterview from "./addInterviewPage";
 import AddPronounceSet from "./AddPronounceSetPage";
 import DeletePronounceSet from "./DeletePronounceSetPage";
+import DeleteTest from "./deleteTestSetPage";
+import DeleteInterview from "./deleteInterviewPage";
+import UserAnalyticsDashboard from "./userAnalytics";
 
 const AdminDashboard = () => {
   const [activePage, setActivePage] = useState("flashcards-add");
@@ -28,10 +32,16 @@ const AdminDashboard = () => {
         return <AddPronounceSet />;
       case "pronounce-delete":
         return <DeletePronounceSet />;
-      case "test":
+      case "test-add":
         return <AddTest />;
-      case "interview":
+      case "test-delete":
+        return <DeleteTest/>
+      case "interview-add":
         return <AddInterview />;
+      case "interview-delete":
+        return <DeleteInterview/>
+      case "analytics":
+        return <UserAnalyticsDashboard/>
       default:
         return <div>Select an option from the sidebar</div>;
     }
@@ -40,9 +50,12 @@ const AdminDashboard = () => {
   const menuItems = [
     { id: "flashcards-add", label: "Add Flashcards", icon: <FilePlus2 /> },
     { id: "flashcards-delete", label: "Delete Flashcards", icon: <Trash2 /> },
-    { id: "test", label: "Add Test", icon: <ClipboardList /> },
-    { id: "interview", label: "Add Interview", icon: <Users /> },
+    { id: "test-add", label: "Add Test", icon: <ClipboardList /> },
+    { id: "test-delete", label: "delete Test", icon: <ClipboardList /> },
+    { id: "interview-add", label: "Add Interview", icon: <Users /> },
+    { id: "interview-delete", label: "Delete Interview", icon: <Users /> },
     {id:"pronounce-add", label:"Add Pronunciation Set", icon: <FilePlus2 />},
+    {id:"analytics",label:"User Analytics",icon: <Users />},
     { id: "pronounce-delete", label: "Delete Pronunciation Set", icon: <Trash2 /> },
   ];
 
