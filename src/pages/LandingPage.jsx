@@ -60,7 +60,6 @@ export default function LandingPage() {
             }
             <p className="text-lg text-slate-600 leading-relaxed">
               To Skillcase — a platform where you can learn, practice, and grow.
-              Learn, practice, and improve with our four tools — Flashcards, Take Test, Interview, and Pronounce — everything you need to study better and grow faster.
             </p>
             
             {!user?.user_id &&<Link
