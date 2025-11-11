@@ -1,11 +1,19 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { BookOpen, FileText, Video, ArrowRight, Mic } from "lucide-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { useNavigate, useLocation, useParams, useSearchParams } from 'react-router-dom';
+
 
 export default function LandingPage() {
   const {user} = useSelector((state) => state.auth);
+  const navigate = useNavigate();
   
+  useEffect(()=>{
+    if (!user){
+      navigate('/Login');
+    }
+  })
   const services = [
     {
       icon: <BookOpen className="w-12 h-12" />,
@@ -23,7 +31,7 @@ export default function LandingPage() {
     },
     {
       icon: <Video className="w-12 h-12" />,
-      title: "Mock Interviews",
+      title: "Mock Interviews(Coming soon)",
       description: "Prepare for real interviews with AI-powered mock sessions that provide instant feedback and guidance.",
       color: "bg-amber-500",
       link: "#interview"
@@ -90,18 +98,18 @@ export default function LandingPage() {
 
                 <Link
                   to={user?.user_prof_level ? (`/interview/${user?.user_prof_level}`):('interview/test')}
-                  className="bg-[#81D4FA] to-amber-600 rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
+                  className="bg-gray-500 to-amber-600 rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group pointer-events-none cursor-not-allowed opacity-60"
                 >
                   <Video className="w-12 h-12 sm:w-16 sm:h-16 text-white mb-3 sm:mb-4 group-hover:scale-110 transition-transform" />
                   <div className="text-center text-white">
                     <div className="text-lg sm:text-xl font-bold mb-1">Mock Interview</div>
-                    <div className="text-xs sm:text-sm opacity-90">AI Practice</div>
+                    <div className="text-xs sm:text-sm opacity-90">Coming Soon</div>
                   </div>
                 </Link>
 
                 <Link
                   to={user?.user_prof_level ? (`/pronounce/${user?.user_prof_level}`):('pronounce/test')}
-                  className="bg-[#37474F] rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
+                  className="bg-[#81D4FA] rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
                 >
                   <Mic className="w-12 h-12 sm:w-16 sm:h-16 text-white mb-3 sm:mb-4 group-hover:scale-110 transition-transform" />
                   <div className="text-center text-white">
