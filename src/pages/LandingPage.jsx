@@ -47,6 +47,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white w-screen">
+      {user && (
       <section id="home" className="w-full px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
         <div className="container mx-auto grid lg:grid-cols-2 gap-8 xl:gap-12 items-center">
           <div className="space-y-6">
@@ -71,8 +72,7 @@ export default function LandingPage() {
           </div>
 
           <div className="relative w-full">
-            {user && (
-              // Logged-in user view: Show action cards in 2x2 grid
+            
               <div className="grid grid-cols-2 gap-4 w-full">
                 <Link
                   to={user?.user_prof_level ? (`/practice/${user?.user_prof_level}`):('practice/test')}
@@ -118,10 +118,10 @@ export default function LandingPage() {
                   </div>
                 </Link>
               </div>
-            ) }
           </div>
         </div>
       </section>
+      )};
     </div>
   );
 }
