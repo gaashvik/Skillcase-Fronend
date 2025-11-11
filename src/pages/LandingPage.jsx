@@ -71,7 +71,7 @@ export default function LandingPage() {
           </div>
 
           <div className="relative w-full">
-            {user ? (
+            {user && (
               // Logged-in user view: Show action cards in 2x2 grid
               <div className="grid grid-cols-2 gap-4 w-full">
                 <Link
@@ -118,39 +118,7 @@ export default function LandingPage() {
                   </div>
                 </Link>
               </div>
-            ) : (
-              // Non-logged-in user view: Show stats grid
-              <div className="grid grid-cols-2 gap-4 w-full">
-                <div className="space-y-4">
-                  <div className="bg-[#FFD54F] rounded-2xl p-6 h-44 sm:h-48 flex items-center justify-center shadow-xl">
-                    <div className="text-center text-white">
-                      <div className="text-3xl sm:text-4xl font-bold">50K+</div>
-                      <div className="text-xs sm:text-sm mt-2 opacity-90">Active Learners</div>
-                    </div>
-                  </div>
-                  <div className="bg-[#1976D2] to-blue-600 rounded-2xl p-6 h-56 sm:h-64 flex items-center justify-center shadow-xl">
-                    <div className="text-center text-white">
-                      <div className="text-3xl sm:text-4xl font-bold">95%</div>
-                      <div className="text-xs sm:text-sm mt-2 opacity-90">Success Rate</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="space-y-4 pt-8">
-                  <div className="bg-[#81D4FA] to-emerald-500 rounded-2xl p-6 h-56 sm:h-64 flex items-center justify-center shadow-xl">
-                    <div className="text-center text-white">
-                      <div className="text-3xl sm:text-4xl font-bold">1000+</div>
-                      <div className="text-xs sm:text-sm mt-2 opacity-90">Practice Tests</div>
-                    </div>
-                  </div>
-                  <div className="bg-[#37474F] rounded-2xl p-6 h-44 sm:h-48 flex items-center justify-center shadow-xl">
-                    <div className="text-center text-white">
-                      <div className="text-3xl sm:text-4xl font-bold">24/7</div>
-                      <div className="text-xs sm:text-sm mt-2 opacity-90">Support</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+            ) }
           </div>
         </div>
       </section>
