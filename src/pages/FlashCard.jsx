@@ -63,7 +63,7 @@ const FlashcardStudyPage = () => {
       }
       else{
        if (flashcardSet[currentCard]?.front_content) {
-        speakText(flashcardSet[currentCard].front_content, 'de-DE');
+        speakText(flashcardSet[currentCard].front_content, 'en-En');
       }
     }
     },[currentCard,flashcardSet,isFlipped])
