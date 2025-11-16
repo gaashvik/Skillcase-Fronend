@@ -9,12 +9,7 @@ function DashboardCard04() {
     const fetchUserInteractions = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:3000/api/admin/analytics/prev-month-user-completetion-analytics', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        const response = await api.get('/admin/analytics/prev-month-user-completetion-analytics');
 
         if (!response.ok) {
           throw new Error('Failed to fetch user interaction data');

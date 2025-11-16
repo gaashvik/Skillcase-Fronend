@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import EditMenu from '../../components/DropdownEditMenu';
-
+import api from '../../../api/axios';
 function DashboardCard03() {
   const [totalUsers, setTotalUsers] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -11,12 +11,7 @@ function DashboardCard03() {
     const fetchTotalUsers = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:3000/api/admin/analytics/user-count', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        const response = await api.get('/admin/analytics/user-count');
 
         if (!response.ok) {
           throw new Error('Failed to fetch total users');

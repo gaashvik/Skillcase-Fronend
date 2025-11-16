@@ -4,7 +4,7 @@ import LineChart from '../../charts/LineChart01';
 import { chartAreaGradient } from '../../charts/ChartjsConfig';
 import EditMenu from '../../components/DropdownEditMenu';
 import { adjustColorOpacity, getCssVariable } from '../../utils/Utils';
-
+import api from '../../../api/axios';
 function DashboardCard01() {
   const [userData, setUserData] = useState({ count: 0, result: [] });
   const [loading, setLoading] = useState(true);
@@ -15,12 +15,7 @@ function DashboardCard01() {
     const fetchUserData = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:3000/api/admin/analytics/new-user-analytics', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        const response = await api.get('/admin/analytics/new-user-analytics');
 
         if (!response.ok) {
           throw new Error('Failed to fetch user data');

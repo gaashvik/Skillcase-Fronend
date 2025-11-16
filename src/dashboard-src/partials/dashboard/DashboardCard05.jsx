@@ -12,12 +12,7 @@ function DashboardCard05() {
     const fetchFlashcardAnalytics = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:3000/api/admin/analytics/prev-month-test-completetion-analytics', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        const response = await api.get('/admin/analytics/prev-month-test-completetion-analytics');
 
         if (!response.ok) {
           throw new Error('Failed to fetch flashcard analytics');

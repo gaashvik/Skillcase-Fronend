@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import api from '../../../api/axios';
 function DashboardCard07() {
   const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,12 +15,7 @@ function DashboardCard07() {
   const fetchUserAnalytics = async (page = 1) => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:3000/api/admin/analytics?page=${page}&limit=10`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await api.get(`/admin/analytics?page=${page}&limit=10`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch user analytics');

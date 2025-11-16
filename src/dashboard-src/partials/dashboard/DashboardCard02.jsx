@@ -4,7 +4,7 @@ import LineChart from '../../charts/LineChart01';
 import { chartAreaGradient } from '../../charts/ChartjsConfig';
 import EditMenu from '../../components/DropdownEditMenu';
 import { adjustColorOpacity, getCssVariable } from '../../utils/Utils';
-
+import api from '../../../api/axios';
 function DashboardCard02() {
   const [interactionData, setInteractionData] = useState({ count: 0, result: [] });
   const [loading, setLoading] = useState(true);
@@ -15,12 +15,7 @@ function DashboardCard02() {
     const fetchInteractionData = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:3000/api/admin/analytics/prev-month-interaction-analytics', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        const response = await api.get('/admin/analytics/prev-month-interaction-analytics');
 
         if (!response.ok) {
           throw new Error('Failed to fetch interaction data');
