@@ -17,16 +17,17 @@ import AddTestPage from './pages/addTestPage';
 import api from "./api/axios"
 import InterviewSelect from './pages/interviewSelect';
 import { setUser, logout } from './redux/auth/authSlice';
-import AdminDashboard from './pages/admin';
-import VoiceRecorder from './pages/test';
 import ProSelect from './pages/pronounceSelect';
 // import CardOverlayExample from './components/testOverlay';
 import Pronounce from './pages/pronounce';
 import AddPronounceSet from './pages/AddPronounceSetPage';
 import DeletePronounceSet from './pages/DeletePronounceSetPage';
+import Dashboard from './dashboard-src/pages/Dashboard';
 if (typeof global === 'undefined') {
+
   window.global = window;
 }
+import './dashboard-src/css/style.css';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -54,19 +55,12 @@ export default function App() {
     <Routes>
 
       <Route path='/' element={<LandingPage />}/>
-      <Route path='/admin/addFlashSet' element={<AddFlashSet />} />
-      <Route path='/admin/addPronounceSet' element={<AddPronounceSet />} />
-      <Route path='/admin/addTest' element={<AddTestPage />} />
-      <Route path ='/admin/addInterview' element = {<AddInterviewPage/>}/>
-      <Route path='/admin/deleteFlashSet' element={<DeleteFlashSet />} />
-      <Route path='/admin/deletePronounceSet' element={<DeletePronounceSet />} />
       <Route path ='/test/:prof_level' element = {<TestSelect/>}/>
-       <Route path ='/interview/:prof_level' element = {<InterviewSelect/>}/>
+       {/* <Route path ='/interview/:prof_level' element = {<InterviewSelect/>}/> */}
       <Route path='/practice/:prof_level' element={<ChapterSelect/>}/>
       <Route path='/pronounce/:prof_level' element={<ProSelect/>}/>
-      <Route path='/practice/:prof_level/:set_id' element={<FlashcardStudyPage/>}/>
-      <Route path='/admin' element ={<AdminDashboard/>}/>
-      <Route path='/t' element ={<VoiceRecorder/>}/>
+      <Route path='/p ractice/:prof_level/:set_id' element={<FlashcardStudyPage/>}/>
+      <Route path='/admin' element ={<Dashboard/>}/>
       <Route path='/pronounce/:prof_level/:pronounce_id' element ={<Pronounce/>}/>
       <Route path='/Login' element={<LoginSignupPage/>}/>
     </Routes>

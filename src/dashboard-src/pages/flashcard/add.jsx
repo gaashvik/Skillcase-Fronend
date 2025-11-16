@@ -1,9 +1,8 @@
 import React from "react";
 import { Upload, FileText, CheckCircle, AlertCircle, Loader } from "lucide-react";
-import api from "../api/axios";
-import axios from "axios";
+import api from "../../../api/axios";
 
-export default function AddPronounceSet() {
+export default function AddFlashSet() {
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [fileName, setFileName] = React.useState('');
   const [chapterName, setChapterName] = React.useState('');
@@ -11,6 +10,15 @@ export default function AddPronounceSet() {
   const [proficiency, setProficiency] = React.useState('');
   const [uploadStatus, setUploadStatus] = React.useState('');
   const [isUploading, setIsUploading] = React.useState(false);
+
+  const prof_chapter_mp = {
+    A1: ['Chapter 1','Chapter 2','Chapter 3','Chapter 4','Chapter 5','Chapter 6','Chapter 7','Chapter 8','Chapter 9','Chapter 10','Chapter 11','Chapter 12'],
+    A2: ['Chapter 1','Chapter 2','Chapter 3'],
+    B1: ['Lesson 1','Lesson 2','Lesson 3'],
+    B2: ['Unit 1','Unit 2'],
+    C1: ['Module 1','Module 2'],
+    C2: ['Topic 1'],
+  };
 
   const proficiencyLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'Test'];
 
@@ -39,11 +47,11 @@ export default function AddPronounceSet() {
     try {
       const formData = new FormData();
       formData.append('file', selectedFile);
-      formData.append('pronounce_name', chapterName);
+      formData.append('set_name', chapterName);
       formData.append('proficiency_level', proficiency);
 
-      const res = await axios.post("/admin/checkPronounce", {
-        "pronounce_name": chapterName,
+      const res = await api.post("/admin/check", {
+        "set_name": chapterName,
         "proficiency_level": proficiency
       });
 
@@ -55,7 +63,7 @@ export default function AddPronounceSet() {
         setUploadStatus('uploading:Uploading file...');
       }
 
-      await axios.post("/admin/addPronounceCardSet", formData, {
+      await api.post("/admin/addFlashCardSet", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -102,9 +110,9 @@ export default function AddPronounceSet() {
         icon: Loader
       },
       uploading: {
-        bg: 'bg-violet-50 ',
-        border: 'border-violet-200 ',
-        text: 'text-violet-700 ',
+        bg: 'bg-blue-50 ',
+        border: 'border-blue-200 ',
+        text: 'text-blue-700 ',
         icon: Loader
       }
     };
@@ -119,10 +127,10 @@ export default function AddPronounceSet() {
       {/* Page Header */}
       <div className="mb-8">
         <h1 className="text-2xl md:text-3xl text-gray-800  font-bold">
-          Add Pronunciation Set
+          Add Flashcard Set
         </h1>
         <p className="text-sm text-gray-600  mt-1">
-          Upload CSV files to create new pronunciation learning sets
+          Upload CSV files to create new flashcard learning sets
         </p>
       </div>
 
@@ -145,7 +153,7 @@ export default function AddPronounceSet() {
               />
               <label
                 htmlFor="csv-upload"
-                className="flex items-center justify-center w-full px-4 py-8 border-2 border-dashed border-gray-300  rounded-lg cursor-pointer hover:border-violet-500  transition bg-gray-50 "
+                className="flex items-center justify-center w-full px-4 py-8 border-2 border-dashed border-gray-300  rounded-lg cursor-pointer hover:border-blue-500  transition bg-gray-50 "
               >
                 <div className="text-center">
                   <FileText className="w-12 h-12 text-gray-400  mx-auto mb-3" />
@@ -168,7 +176,7 @@ export default function AddPronounceSet() {
             <select
               value={proficiency}
               onChange={(e) => setProficiency(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300  rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none transition bg-white  text-gray-800 "
+              className="w-full px-4 py-3 border border-gray-300  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white  text-gray-800 "
             >
               <option value="">Select proficiency level</option>
               {proficiencyLevels.map((level) => (
@@ -178,18 +186,21 @@ export default function AddPronounceSet() {
           </div>
 
           {/* Chapter Name */}
-          {proficiency && (
+          {proficiency && prof_chapter_mp[proficiency] && (
             <div>
               <label className="block text-sm font-semibold text-gray-800  mb-3">
                 Chapter Name
               </label>
-              <input
-                type="text"
+              <select
                 value={chapterName}
                 onChange={(e) => setChapterName(e.target.value)}
-                placeholder="Enter chapter name"
-                className="w-full px-4 py-3 border border-gray-300  rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none transition bg-white  text-gray-800  placeholder-gray-400 "
-              />
+                className="w-full px-4 py-3 border border-gray-300  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white  text-gray-800 "
+              >
+                <option value="">Select a chapter</option>
+                {prof_chapter_mp[proficiency].map((chapter) => (
+                  <option key={chapter} value={chapter}>{chapter}</option>
+                ))}
+              </select>
             </div>
           )}
 
@@ -211,7 +222,7 @@ export default function AddPronounceSet() {
           <button
             onClick={handleSubmit}
             disabled={isUploading || !selectedFile || !chapterName || !proficiency}
-            className="w-full bg-violet-500 text-white px-6 py-3 rounded-lg hover:bg-violet-600 transition font-semibold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-violet-500"
+            className="w-full bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition font-semibold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-500"
           >
             {isUploading ? (
               <>
@@ -236,7 +247,7 @@ export default function AddPronounceSet() {
             <p className="font-semibold mb-1">CSV Format Requirements:</p>
             <ul className="list-disc list-inside space-y-1 text-blue-600 ">
               <li>First row should contain column headers</li>
-              <li>Include word, pronunciation, and example columns</li>
+              <li>Include word, translation, and example columns</li>
               <li>Ensure all rows have consistent formatting</li>
             </ul>
           </div>

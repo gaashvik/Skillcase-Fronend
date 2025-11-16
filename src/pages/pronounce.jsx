@@ -65,8 +65,14 @@ const Pronounce = () => {
       setAssesmentResult(null);
 
       timerRef.current = setInterval(() => {
-        setRecordingTime((prev) => prev + 1);
-      }, 1000);
+  setRecordingTime((prev) => {
+    if (prev + 1 >= 5) {
+      stopRecording();   // Auto-stop at 10 seconds
+      return 5;
+    }
+    return prev + 1;
+  });
+}, 1000);
     } catch (err) {
       console.error("Error accessing microphone:", err);
       setUploadStatus("Error: Could not access microphone");

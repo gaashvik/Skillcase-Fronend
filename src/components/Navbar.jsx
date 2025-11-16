@@ -48,12 +48,6 @@ export default function Navbar() {
             >
               Test
             </Link>
-            <Link
-              to={user?.user_prof_level ? `/interview/${user.user_prof_level}` : "/interview/test"}
-              className="text-slate-600 hover:text-slate-900 transition font-medium"
-            >
-              Interview
-            </Link>
 
             {isAuthenticated ? (
               <>

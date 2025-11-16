@@ -583,7 +583,7 @@ const FlashcardStudyPage = () => {
     const testPosition = isAtFinalTest ? 'Final' : currentCard + 1;
     
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-slate-50">
+      <div className="min-h-screen bg-gray-100">
         <header className="bg-white shadow-sm border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-6 py-4">
             <div className="flex items-center justify-between gap-4">

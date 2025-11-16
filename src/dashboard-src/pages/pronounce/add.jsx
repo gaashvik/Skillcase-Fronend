@@ -1,7 +1,6 @@
 import React from "react";
 import { Upload, FileText, CheckCircle, AlertCircle, Loader } from "lucide-react";
-import api from "../api/axios";
-import axios from "axios";
+import api from "../../../api/axios";
 
 export default function AddPronounceSet() {
   const [selectedFile, setSelectedFile] = React.useState(null);
@@ -42,7 +41,7 @@ export default function AddPronounceSet() {
       formData.append('pronounce_name', chapterName);
       formData.append('proficiency_level', proficiency);
 
-      const res = await axios.post("/admin/checkPronounce", {
+      const res = await api.post("/admin/checkPronounce", {
         "pronounce_name": chapterName,
         "proficiency_level": proficiency
       });
@@ -55,7 +54,7 @@ export default function AddPronounceSet() {
         setUploadStatus('uploading:Uploading file...');
       }
 
-      await axios.post("/admin/addPronounceCardSet", formData, {
+      await api.post("/admin/addPronounceCardSet", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -102,9 +101,9 @@ export default function AddPronounceSet() {
         icon: Loader
       },
       uploading: {
-        bg: 'bg-violet-50 ',
-        border: 'border-violet-200 ',
-        text: 'text-violet-700 ',
+        bg: 'bg-blue-50 ',
+        border: 'border-blue-200 ',
+        text: 'text-blue-700 ',
         icon: Loader
       }
     };
@@ -145,7 +144,7 @@ export default function AddPronounceSet() {
               />
               <label
                 htmlFor="csv-upload"
-                className="flex items-center justify-center w-full px-4 py-8 border-2 border-dashed border-gray-300  rounded-lg cursor-pointer hover:border-violet-500  transition bg-gray-50 "
+                className="flex items-center justify-center w-full px-4 py-8 border-2 border-dashed border-gray-300  rounded-lg cursor-pointer hover:border-blue-500  transition bg-gray-50 "
               >
                 <div className="text-center">
                   <FileText className="w-12 h-12 text-gray-400  mx-auto mb-3" />
@@ -168,7 +167,7 @@ export default function AddPronounceSet() {
             <select
               value={proficiency}
               onChange={(e) => setProficiency(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300  rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none transition bg-white  text-gray-800 "
+              className="w-full px-4 py-3 border border-gray-300  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white  text-gray-800 "
             >
               <option value="">Select proficiency level</option>
               {proficiencyLevels.map((level) => (
@@ -188,7 +187,7 @@ export default function AddPronounceSet() {
                 value={chapterName}
                 onChange={(e) => setChapterName(e.target.value)}
                 placeholder="Enter chapter name"
-                className="w-full px-4 py-3 border border-gray-300  rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none transition bg-white  text-gray-800  placeholder-gray-400 "
+                className="w-full px-4 py-3 border border-gray-300  rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white  text-gray-800  placeholder-gray-400 "
               />
             </div>
           )}
@@ -211,7 +210,7 @@ export default function AddPronounceSet() {
           <button
             onClick={handleSubmit}
             disabled={isUploading || !selectedFile || !chapterName || !proficiency}
-            className="w-full bg-violet-500 text-white px-6 py-3 rounded-lg hover:bg-violet-600 transition font-semibold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-violet-500"
+            className="w-full bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition font-semibold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-500"
           >
             {isUploading ? (
               <>

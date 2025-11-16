@@ -1,7 +1,7 @@
 import { useState, useRef, use, useEffect } from "react";
 import { 
   BookOpen, Clock, BarChart3, Layers, Award, 
-  BarChart2, Play, Bookmark, ChevronDown, ChevronUp, ChevronLeft, ChevronRight ,Check
+  BarChart2, Play, Bookmark, ChevronDown, ChevronUp, ChevronLeft, ChevronRight ,Check,RefreshCw
 } from "lucide-react";
 
 import "../css/ChapterSelect.css"
@@ -13,9 +13,13 @@ export default function ProSelect() {
   const {prof_level} = useParams();
   const [chapters, setChapters] = useState([]);
   const [progress,setProgress] = useState(0);
+    const [loading,setLoading] = useState(false);
+      const [status, setStatus] = useState("");
+
 
   useEffect(() => {
     const getCards = async () => {
+      setLoading(true);
         try{
           const res = await api.get(`/pronounce/allPronounceSet/${prof_level}`);
           setChapters(res.data);
@@ -27,6 +31,10 @@ export default function ProSelect() {
         }
         catch(err){
           console.error(err);
+          setStatus('could not fetch chapters')
+      }
+      finally{
+        setLoading(false)
       }
     };
     getCards();
@@ -52,7 +60,7 @@ export default function ProSelect() {
   const scrollRefs = { easy: useRef(null), medium: useRef(null), hard: useRef(null) };
 
   return (
-    <section className="w-screen min-h-screen flex flex-col md:flex-row p-5 bg-blue-50">
+    <section className="w-screen bg-gray-100 min-h-screen flex flex-col md:flex-row p-5 ">
       {/* Left column */}
 <div className="w-full md:w-1/3 md:mb-20 bg-slate-900 text-white flex flex-col md:flex-col justify-between md:justify-center rounded-3xl md:m-2 p-10 space-y-3">
   <div className='flex flex-col md:flex-col space-y-4 md:space-y-6'>
@@ -73,9 +81,13 @@ export default function ProSelect() {
   </div>
 </div>
 
-      {/* Right column - Desktop: List view, Mobile: Grid view */}
+     
       <div className="w-full md:w-2/3 mt-5 max-h-screen overflow-y-auto hide-scrollbar">
         {/* Desktop View - List */}
+         {loading && (<div className="min-h-[400px] flex justify-center items-center">
+      <RefreshCw className={`w-7 h-7 ${loading ? "animate-spin" : ""}`} />
+      </div>)}
+
         <div className="hidden md:block space-y-4">
           {chapters.map((chapter) => {
             const color = 'amber';
@@ -108,6 +120,10 @@ export default function ProSelect() {
 
         {/* Mobile View - Grid/Heatmap */}
         <div className="md:hidden grid grid-cols-3 gap-2">
+           {loading && (<div className="min-h-[400px] flex justify-center items-center">
+      <RefreshCw className={`w-7 h-7 ${loading ? "animate-spin" : ""}`} />
+      </div>)}
+
           {chapters.map((chapter) => {
             const color = 'amber';
             return (

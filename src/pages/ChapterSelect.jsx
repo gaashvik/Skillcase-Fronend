@@ -3,7 +3,7 @@ import {
   BookOpen, Clock, BarChart3, Layers, Award, 
   BarChart2, Play, Bookmark, ChevronDown, ChevronUp, ChevronLeft, ChevronRight ,Check
 } from "lucide-react";
-
+import { RefreshCw } from "lucide-react";
 import "../css/ChapterSelect.css"
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -13,9 +13,14 @@ export default function TwoColumnSection() {
   const {prof_level} = useParams();
   const [chapters, setChapters] = useState([]);
   const [progress,setProgress] = useState(0);
+  const [loading,setLoading] = useState(false);
+  const [status, setStatus] = useState("");
+  
 
   useEffect(() => {
     const getCards = async () => {
+      setLoading(true);
+      setStatus("Fetching chapters, please wait.")
         try{
           const res = await api.get(`/practice/allFlashSet/${prof_level}`);
           setChapters(res.data);
@@ -26,9 +31,14 @@ export default function TwoColumnSection() {
           const prog = (completed_chap_num/chapter_num)*100;
           console.log(prog);
           setProgress(prog);
+          
         }
         catch(err){
           console.error(err);
+          setStatus("error:Error fetching chapters");
+      }
+      finally{
+        setLoading(false)
       }
     };
     getCards();
@@ -54,7 +64,7 @@ export default function TwoColumnSection() {
   const scrollRefs = { easy: useRef(null), medium: useRef(null), hard: useRef(null) };
 
   return (
-    <section className="w-screen min-h-screen flex flex-col md:flex-row p-5 bg-blue-50">
+    <section className="w-screen min-h-screen bg-gray-100 flex flex-col md:flex-row p-5 ">
       {/* Left column */}
 <div className="w-full md:w-1/3 md:mb-20 bg-slate-900 text-white flex flex-col md:flex-col justify-between md:justify-center rounded-3xl md:m-2 p-10 space-y-3">
   <div className='flex flex-col md:flex-col space-y-4 md:space-y-6'>
@@ -76,8 +86,14 @@ export default function TwoColumnSection() {
 </div>
 
       {/* Right column - Desktop: List view, Mobile: Grid view */}
+
       <div className="w-full md:w-2/3 mt-5 max-h-screen overflow-y-auto hide-scrollbar">
         {/* Desktop View - List */}
+        {loading && (<div className="min-h-[400px] flex justify-center items-center">
+      <RefreshCw className={`w-7 h-7 ${loading ? "animate-spin" : ""}`} />
+      </div>)}
+        {!loading && (
+          <>
         <div className="hidden md:block space-y-4">
           {chapters.map((chapter) => {
             const color = 'amber';
@@ -110,6 +126,10 @@ export default function TwoColumnSection() {
 
         {/* Mobile View - Grid/Heatmap */}
         <div className="md:hidden grid grid-cols-3 gap-2">
+           {loading && (<div className="min-h-[400px] flex justify-center items-center">
+                <RefreshCw className={`w-7 h-7 ${loading ? "animate-spin" : ""}`} />
+                </div>)}
+          
           {chapters.map((chapter) => {
             const color = 'amber';
             return (
@@ -137,6 +157,8 @@ export default function TwoColumnSection() {
             );
           })}
         </div>
+        </>
+      )}
       </div>
     </section>
   );

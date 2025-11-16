@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import {
   BookOpen, Clock, BarChart3, Layers, Award,
-  BarChart2, Play, FileText, Target, ChevronRight, Trophy
+  BarChart2, Play, FileText, Target, ChevronRight, Trophy,RefreshCw
 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../api/axios";
@@ -12,7 +12,8 @@ export default function TestSelect() {
   const [selectedTest, setSelectedTest] = useState(null);
   const [finalTest, setFinalTest] = useState(null);
   const [chapterTests, setChapterTests] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [status,setStatus] = useState('')
   const navigate = useNavigate();
 
   // Open/close overlay
@@ -33,6 +34,7 @@ export default function TestSelect() {
   // Fetch tests
   useEffect(() => {
     const getTests = async () => {
+      setLoading(true);
       try {
         const res = await api.get(`/test/get/${prof_level}`);
         setFinalTest(res.data.results.final[0]);
@@ -40,6 +42,7 @@ export default function TestSelect() {
         setLoading(false);
       } catch (err) {
         console.error(err);
+        setStatus('could not fetch test');
         setLoading(false);
       }
     };
@@ -76,19 +79,12 @@ export default function TestSelect() {
     return styles[difficulty] || styles.Easy;
   };
 
-  if (loading) {
-    return (
-      <section className="w-screen min-h-screen flex items-center justify-center bg-blue-50">
-        <div className="text-xl text-slate-700">Loading tests...</div>
-      </section>
-    );
-  }
 
   const difficulty = finalTest?.difficulty || "Easy";
   const styles = getDifficultyStyles(difficulty);
 
   return (
-    <section className="w-screen min-h-screen flex flex-col md:flex-row p-5 bg-blue-50">
+    <section className="w-screen bg-gray-100 min-h-screen flex flex-col md:flex-row p-5">
       {/* Left column - Desktop only */}
       <div className="hidden md:flex md:w-1/3 flex-col gap-4 md:m-2 md:h-screen md:sticky md:top-0">
         {/* Test Info Block */}
@@ -153,6 +149,9 @@ export default function TestSelect() {
 
       {/* Right column - Chapter Tests */}
       <div className="w-full md:w-2/3 md:mt-2 max-h-screen overflow-y-auto hide-scrollbar">
+       {loading && (<div className="min-h-[400px] flex justify-center items-center">
+      <RefreshCw className={`w-7 h-7 ${loading ? "animate-spin" : ""}`} />
+      </div>)}
         {/* Desktop List View */}
         <div className="hidden md:block space-y-4">
           {chapterTests.map((test) => {
