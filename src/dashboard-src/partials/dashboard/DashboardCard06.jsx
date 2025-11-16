@@ -11,11 +11,8 @@ function DashboardCard06() {
         setLoading(true);
         const response = await api.get('/admin/analytics/prev-month-test-completetion-analytics');
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch flashcard analytics');
-        }
 
-        const data = await response.json();
+        const data = await response.data;
         setFlashcardData(data); // All records
         setError(null);
       } catch (err) {

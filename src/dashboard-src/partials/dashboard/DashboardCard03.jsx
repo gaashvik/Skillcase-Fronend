@@ -13,11 +13,8 @@ function DashboardCard03() {
         setLoading(true);
         const response = await api.get('/admin/analytics/user-count');
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch total users');
-        }
 
-        const data = await response.json();
+        const data = await response.data;
         setTotalUsers(data.count);
         setError(null);
       } catch (err) {

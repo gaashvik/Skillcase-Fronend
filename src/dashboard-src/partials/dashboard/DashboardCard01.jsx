@@ -17,11 +17,7 @@ function DashboardCard01() {
         setLoading(true);
         const response = await api.get('/admin/analytics/new-user-analytics');
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch user data');
-        }
-
-        const data = await response.json();
+        const data = await response.data;
         setUserData(data);
         processChartData(data.result);
         setError(null);

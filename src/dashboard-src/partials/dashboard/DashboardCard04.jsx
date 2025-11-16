@@ -11,11 +11,9 @@ function DashboardCard04() {
         setLoading(true);
         const response = await api.get('/admin/analytics/prev-month-user-completetion-analytics');
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch user interaction data');
-        }
+      
 
-        const data = await response.json();
+        const data = await response.data;
         setUserData(data.slice(0, 10)); // Top 10 users
         setError(null);
       } catch (err) {

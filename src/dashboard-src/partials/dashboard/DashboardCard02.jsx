@@ -17,11 +17,8 @@ function DashboardCard02() {
         setLoading(true);
         const response = await api.get('/admin/analytics/prev-month-interaction-analytics');
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch interaction data');
-        }
-
-        const data = await response.json();
+      
+        const data = await response.data;
         setInteractionData(data);
         processChartData(data.result);
         setError(null);

@@ -17,11 +17,7 @@ function DashboardCard07() {
       setLoading(true);
       const response = await api.get(`/admin/analytics?page=${page}&limit=10`);
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch user analytics');
-      }
-
-      const data = await response.json();
+      const data = await response.data;
       setUserData(data.data);
       setPagination(data.pagination);
       setError(null);
