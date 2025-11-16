@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DoughnutChart from '../../charts/DoughnutChart';
 import { getCssVariable } from '../../utils/Utils';
-
+import api from '../../../api/axios';
 function DashboardCard05() {
   const [flashcardData, setFlashcardData] = useState([]);
   const [loading, setLoading] = useState(true);
