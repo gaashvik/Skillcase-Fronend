@@ -59,7 +59,7 @@ export default function App() {
        {/* <Route path ='/interview/:prof_level' element = {<InterviewSelect/>}/> */}
       <Route path='/practice/:prof_level' element={<ChapterSelect/>}/>
       <Route path='/pronounce/:prof_level' element={<ProSelect/>}/>
-      <Route path='/p ractice/:prof_level/:set_id' element={<FlashcardStudyPage/>}/>
+      <Route path='/practice/:prof_level/:set_id' element={<FlashcardStudyPage/>}/>
       <Route path='/admin' element ={<Dashboard/>}/>
       <Route path='/pronounce/:prof_level/:pronounce_id' element ={<Pronounce/>}/>
       <Route path='/Login' element={<LoginSignupPage/>}/>
